@@ -8,8 +8,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.spksh.financeapp.ui.screens.MainScreen
+import com.spksh.financeapp.ui.screen.MainScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen().apply {
@@ -23,7 +25,6 @@ class MainActivity : ComponentActivity() {
                     0.9f,
                     0.01f
                 )
-                //zoomX.interpolator = OvershootInterpolator()
                 zoomX.duration = 300L
                 zoomX.doOnEnd { screen.remove() }
                 zoomX.start()

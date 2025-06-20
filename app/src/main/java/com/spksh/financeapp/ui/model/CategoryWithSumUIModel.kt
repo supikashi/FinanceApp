@@ -1,10 +1,10 @@
-package com.spksh.financeapp.ui.models
+package com.spksh.financeapp.ui.model
 
 data class CategoryWithSumUIModel(
     val id: Long = 0,
     val name: String = "",
     val emoji: String? = null,
-    val sum: String = "",
     val isIncome: Boolean = false,
     val description: String? = null,
+    val sum: String = "",
 )
