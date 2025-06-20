@@ -1,4 +1,4 @@
-package com.spksh.financeapp.ui.screens
+package com.spksh.financeapp.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

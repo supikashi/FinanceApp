@@ -63,7 +63,7 @@ fun ListItem(
                     text = it,
                     maxLines = 1,
                     fontSize = 16.sp,
-                    modifier = Modifier.padding(4.dp)
+                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
                 )
             }
             Spacer(Modifier.width(16.dp))
