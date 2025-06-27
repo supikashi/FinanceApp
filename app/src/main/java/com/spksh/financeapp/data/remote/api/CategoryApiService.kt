@@ -5,6 +5,9 @@ import com.spksh.financeapp.data.remote.model.CategoryDTO
 import retrofit2.http.GET
 import retrofit2.http.Path
 
+/**
+ * Retrofit-сервис для получения категорий с сервера.
+ */
 interface CategoryApiService {
     @GET("categories")
     suspend fun getCategories(): List<CategoryDTO>

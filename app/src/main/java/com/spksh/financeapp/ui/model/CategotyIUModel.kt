@@ -2,6 +2,9 @@ package com.spksh.financeapp.ui.model
 
 import com.spksh.financeapp.domain.model.Category
 
+/**
+ * UI-модель категории
+ */
 data class CategoryUIModel(
     val id: Long = 0,
     val name: String = "",

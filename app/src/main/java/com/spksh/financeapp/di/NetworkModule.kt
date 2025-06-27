@@ -2,12 +2,9 @@ package com.spksh.financeapp.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.spksh.financeapp.BuildConfig
-import com.spksh.financeapp.data.NetworkConnectivityObserver
 import com.spksh.financeapp.data.remote.api.AccountApiService
 import com.spksh.financeapp.data.remote.api.CategoryApiService
 import com.spksh.financeapp.data.remote.api.TransactionApiService
-import com.spksh.financeapp.domain.ConnectivityObserver
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,6 +17,9 @@ import okhttp3.Request
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
+/**
+ * DI-модуль, предоставляющий сетевые зависимости
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {

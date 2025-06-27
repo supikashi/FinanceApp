@@ -3,6 +3,9 @@ package com.spksh.financeapp.ui.features
 import kotlinx.coroutines.delay
 import retrofit2.HttpException
 
+/**
+ * При коде ошибки 500 делает 3 перезапроса в сеть
+ */
 suspend fun multipleFetch(
     fetch: suspend () -> Unit
 ) {

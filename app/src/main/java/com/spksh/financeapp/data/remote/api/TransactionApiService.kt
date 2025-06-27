@@ -5,6 +5,9 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+/**
+ * Retrofit-сервис для получения транзакций с сервера.
+ */
 interface TransactionApiService {
     @GET("transactions/account/{accountId}/period")
     suspend fun getCategories(

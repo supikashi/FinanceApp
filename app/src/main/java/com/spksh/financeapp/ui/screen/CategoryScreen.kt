@@ -1,7 +1,5 @@
 package com.spksh.financeapp.ui.screen
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,7 +7,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,10 +25,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.spksh.financeapp.MockData
 import com.spksh.financeapp.R
 import com.spksh.financeapp.ui.components.ListItem
+import com.spksh.financeapp.ui.components.ScreenStateHandler
 import com.spksh.financeapp.ui.components.TopBar
 import com.spksh.financeapp.ui.model.CategoryUIModel
-import com.spksh.financeapp.ui.state.AccountUiState
-import com.spksh.financeapp.ui.state.CategoryUiState
+import com.spksh.financeapp.ui.state.AccountScreenState
+import com.spksh.financeapp.ui.state.CategoryScreenState
+import com.spksh.financeapp.ui.state.UiState
 import com.spksh.financeapp.ui.viewModel.AccountViewModel
 import com.spksh.financeapp.ui.viewModel.CategoryViewModel
 
@@ -39,36 +38,17 @@ import com.spksh.financeapp.ui.viewModel.CategoryViewModel
 fun CategoryScreen(
     viewModel: CategoryViewModel
 ) {
-    when(val state = viewModel.uiState.collectAsStateWithLifecycle().value) {
-        is CategoryUiState.Loading -> {
-            Box(
-                modifier = Modifier
-                    .background(color = MaterialTheme.colorScheme.background)
-                    .fillMaxSize()
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(alignment = Alignment.Center)
-                )
-            }
-        }
-        is CategoryUiState.Error -> {
-            Box(
-                modifier = Modifier
-                    .background(color = MaterialTheme.colorScheme.background)
-                    .fillMaxSize()
-            ) {
-                Text(text = state.message)
-            }
-        }
-        is CategoryUiState.Success -> {
-            CategoryScreenImpl(state = state)
-        }
-    }
+    val state = viewModel.uiState.collectAsStateWithLifecycle().value
+    CategoryScreenImpl(
+        state = state,
+        onRetryClick = {viewModel.fetchData()}
+    )
 }
 
 @Composable
 private fun CategoryScreenImpl(
-    state: CategoryUiState.Success
+    state: UiState<CategoryScreenState>,
+    onRetryClick: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -76,54 +56,65 @@ private fun CategoryScreenImpl(
         TopBar(
             headline = stringResource(R.string.my_categories),
         )
-        TextField(
-            value = "",
-            onValueChange = {},
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 56.dp),
-            placeholder = {
+        ScreenStateHandler(
+            state = state,
+            content = { CategoryScreenSuccess(it) },
+            onRetryClick = onRetryClick
+        )
+    }
+}
+
+@Composable
+private fun CategoryScreenSuccess(
+    state: UiState.Success<CategoryScreenState>
+) {
+    TextField(
+        value = "",
+        onValueChange = {},
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 56.dp),
+        placeholder = {
+            Text(
+                text = stringResource(R.string.find_category),
+                style = MaterialTheme.typography.bodyLarge
+            )
+        },
+        trailingIcon = {
+            Icon(
+                painter = painterResource(R.drawable.loupe),
+                contentDescription = null,
+                modifier = Modifier.size(24.dp),
+                tint = MaterialTheme.colorScheme.outline
+            )
+        },
+        singleLine = true,
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+            focusedPlaceholderColor = MaterialTheme.colorScheme.outline,
+            unfocusedPlaceholderColor = MaterialTheme.colorScheme.outline,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            cursorColor = MaterialTheme.colorScheme.onBackground
+        )
+    )
+    HorizontalDivider()
+    LazyColumn {
+        items(state.data.categories) { category ->
+            ListItem(
+                leadIcon = category.emoji,
+                showTrailIcon = false,
+                minHeight = 72.dp,
+                isClickable = true
+            ) {
                 Text(
-                    text = stringResource(R.string.find_category),
+                    text = category.name,
+                    maxLines = 1,
                     style = MaterialTheme.typography.bodyLarge
                 )
-            },
-            trailingIcon = {
-                Icon(
-                    painter = painterResource(R.drawable.loupe),
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp),
-                    tint = MaterialTheme.colorScheme.outline
-                )
-            },
-            singleLine = true,
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                focusedPlaceholderColor = MaterialTheme.colorScheme.outline,
-                unfocusedPlaceholderColor = MaterialTheme.colorScheme.outline,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                cursorColor = MaterialTheme.colorScheme.onBackground
-            )
-        )
-        HorizontalDivider()
-        LazyColumn {
-            items(state.categories) { category ->
-                ListItem(
-                    leadIcon = category.emoji,
-                    showTrailIcon = false,
-                    minHeight = 72.dp,
-                    isClickable = true
-                ) {
-                    Text(
-                        text = category.name,
-                        maxLines = 1,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-                HorizontalDivider()
             }
+            HorizontalDivider()
         }
     }
 }
@@ -132,6 +123,6 @@ private fun CategoryScreenImpl(
 @Composable
 fun CategoriesScreenPreview() {
     CategoryScreenImpl(
-        state = CategoryUiState.Success(MockData.categoriesList)
+        state = UiState.Success(data = CategoryScreenState(MockData.categoriesList))
     )
 }

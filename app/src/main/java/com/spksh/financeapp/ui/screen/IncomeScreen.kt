@@ -28,15 +28,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.spksh.financeapp.MockData
 import com.spksh.financeapp.R
+import com.spksh.financeapp.ui.components.AddButton
 import com.spksh.financeapp.ui.components.ErrorScreen
 import com.spksh.financeapp.ui.components.ListItem
+import com.spksh.financeapp.ui.components.ScreenStateHandler
 import com.spksh.financeapp.ui.components.TopBar
 import com.spksh.financeapp.ui.navigation.IncomeHistory
-import com.spksh.financeapp.ui.state.HistoryUiState
-import com.spksh.financeapp.ui.state.TransactionUiState
+import com.spksh.financeapp.ui.state.TransactionScreenState
+import com.spksh.financeapp.ui.state.UiState
 import com.spksh.financeapp.ui.viewModel.IncomeViewModel
 
 @Composable
@@ -59,7 +60,7 @@ fun IncomeScreen(
 
 @Composable
 private fun IncomeScreenImpl(
-    state: TransactionUiState,
+    state: UiState<TransactionScreenState>,
     onHistoryIconClick: () -> Unit = {},
     onRetryClick: () -> Unit = {}
 ) {
@@ -73,48 +74,21 @@ private fun IncomeScreenImpl(
                 rightIconOnClick = {onHistoryIconClick()},
                 rightIconContentDescription = stringResource(R.string.show_history)
             )
-            when (state) {
-                is TransactionUiState.Error -> {
-                    ErrorScreen(
-                        onRetryClick = onRetryClick
-                    )
-                }
-                TransactionUiState.Loading -> {
-                    Box(
-                        modifier = Modifier
-                            .background(color = MaterialTheme.colorScheme.background)
-                            .fillMaxSize()
-                    ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(alignment = Alignment.Center)
-                        )
-                    }
-                }
-                is TransactionUiState.Success -> {
-                    IncomeScreenSuccess(
-                        state = state
-                    )
-                }
-            }
+            ScreenStateHandler(
+                state = state,
+                content = { IncomeScreenSuccess(state = it) },
+                onRetryClick = onRetryClick
+            )
         }
-        FloatingActionButton(
-            onClick = {},
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(bottom = 16.dp, end = 16.dp)
-                .size(56.dp),
-            shape = CircleShape,
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.background
-        ) {
-            Icon(Icons.Default.Add, stringResource(R.string.add_new))
-        }
+        AddButton(
+            onCLick = {}
+        )
     }
 }
 
 @Composable
 private fun IncomeScreenSuccess(
-    state: TransactionUiState.Success
+    state: UiState.Success<TransactionScreenState>
 ) {
     ListItem(
         showTrailIcon = false,
@@ -130,14 +104,14 @@ private fun IncomeScreenSuccess(
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
-                text = state.sum,
+                text = state.data.sum,
                 style = MaterialTheme.typography.bodyLarge
             )
         }
     }
     HorizontalDivider()
     LazyColumn {
-        items(state.categories) { category ->
+        items(state.data.categories) { category ->
             ListItem(
                 leadIcon = category.emoji,
                 isClickable = true
@@ -178,9 +152,11 @@ private fun IncomeScreenSuccess(
 @Composable
 fun IncomeScreenPreview() {
     IncomeScreenImpl(
-        state = TransactionUiState.Success(
-            sum = MockData.incomeSumText,
-            categories = MockData.incomeCategoriesList
+        state = UiState.Success(
+            data = TransactionScreenState(
+                sum = MockData.incomeSumText,
+                categories = MockData.incomeCategoriesList
+            )
         )
     )
 }

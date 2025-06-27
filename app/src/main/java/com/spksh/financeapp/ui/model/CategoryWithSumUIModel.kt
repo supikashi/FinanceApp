@@ -1,5 +1,8 @@
 package com.spksh.financeapp.ui.model
 
+/**
+ * UI-модель категории с суммой транзакций
+ */
 data class CategoryWithSumUIModel(
     val id: Long = 0,
     val name: String = "",

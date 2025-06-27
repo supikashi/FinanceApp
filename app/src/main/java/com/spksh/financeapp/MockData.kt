@@ -5,6 +5,9 @@ import com.spksh.financeapp.ui.model.CategoryUIModel
 import com.spksh.financeapp.ui.model.CategoryWithSumUIModel
 import com.spksh.financeapp.ui.model.TransactionUiModel
 
+/**
+ * Объект с моковыми данными
+ */
 object MockData {
     val accountsList: List<AccountUIModel> = listOf(
         AccountUIModel(
