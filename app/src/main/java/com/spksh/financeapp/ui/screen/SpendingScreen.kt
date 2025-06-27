@@ -1,23 +1,14 @@
 package com.spksh.financeapp.ui.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,14 +21,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.spksh.financeapp.MockData
 import com.spksh.financeapp.R
-import com.spksh.financeapp.ui.components.ErrorScreen
+import com.spksh.financeapp.ui.components.AddButton
 import com.spksh.financeapp.ui.components.ListItem
+import com.spksh.financeapp.ui.components.ScreenStateHandler
 import com.spksh.financeapp.ui.components.TopBar
-import com.spksh.financeapp.ui.model.CategoryWithSumUIModel
-import com.spksh.financeapp.ui.navigation.IncomeHistory
 import com.spksh.financeapp.ui.navigation.SpendingHistory
-import com.spksh.financeapp.ui.state.TransactionUiState
-import com.spksh.financeapp.ui.viewModel.IncomeViewModel
+import com.spksh.financeapp.ui.state.TransactionScreenState
+import com.spksh.financeapp.ui.state.UiState
 import com.spksh.financeapp.ui.viewModel.SpendingViewModel
 
 @Composable
@@ -60,7 +50,7 @@ fun SpendingScreen(
 
 @Composable
 fun SpendingScreenImpl(
-    state: TransactionUiState,
+    state: UiState<TransactionScreenState>,
     onHistoryIconClick: () -> Unit = {},
     onRetryClick: () -> Unit = {}
 ) {
@@ -74,48 +64,21 @@ fun SpendingScreenImpl(
                 rightIconOnClick = {onHistoryIconClick()},
                 rightIconContentDescription = stringResource(R.string.show_history)
             )
-            when (state) {
-                is TransactionUiState.Error -> {
-                    ErrorScreen(
-                        onRetryClick = onRetryClick
-                    )
-                }
-                is TransactionUiState.Loading -> {
-                    Box(
-                        modifier = Modifier
-                            .background(color = MaterialTheme.colorScheme.background)
-                            .fillMaxSize()
-                    ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(alignment = Alignment.Center)
-                        )
-                    }
-                }
-                is TransactionUiState.Success -> {
-                    SpendingScreenSuccess(
-                        state = state
-                    )
-                }
-            }
+            ScreenStateHandler(
+                state = state,
+                content = { SpendingScreenSuccess(it) },
+                onRetryClick = onRetryClick,
+            )
         }
-        FloatingActionButton(
-            onClick = {},
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(bottom = 16.dp, end = 16.dp)
-                .size(56.dp),
-            shape = CircleShape,
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.background
-        ) {
-            Icon(Icons.Default.Add, stringResource(R.string.add_new))
-        }
+        AddButton(
+            onCLick = {}
+        )
     }
 }
 
 @Composable
 fun SpendingScreenSuccess(
-    state: TransactionUiState.Success
+    state: UiState.Success<TransactionScreenState>
 ) {
     ListItem(
         showTrailIcon = false,
@@ -131,7 +94,7 @@ fun SpendingScreenSuccess(
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
-                text = state.sum,
+                text = state.data.sum,
                 maxLines = 1,
                 style = MaterialTheme.typography.bodyLarge
             )
@@ -139,7 +102,7 @@ fun SpendingScreenSuccess(
     }
     HorizontalDivider()
     LazyColumn {
-        items(state.categories) { category ->
+        items(state.data.categories) { category ->
             ListItem(
                 leadIcon = category.emoji,
                 isClickable = true
@@ -180,9 +143,11 @@ fun SpendingScreenSuccess(
 @Composable
 fun SpendingScreenPreview() {
     SpendingScreenImpl(
-        state = TransactionUiState.Success(
-            sum = MockData.spendingSumText,
-            categories = MockData.spendingCategoriesList
+        state = UiState.Success(
+            data = TransactionScreenState(
+                sum = MockData.spendingSumText,
+                categories = MockData.spendingCategoriesList
+            )
         )
     )
 }

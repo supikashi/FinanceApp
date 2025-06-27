@@ -1,11 +1,13 @@
 package com.spksh.financeapp.ui.model
 
 import com.spksh.financeapp.domain.model.Transaction
-import com.spksh.financeapp.ui.features.formatCurrency
-import com.spksh.financeapp.ui.features.formatDouble
+import com.spksh.financeapp.ui.features.formatSum
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
+/**
+ * UI-модель транзакции
+ */
 data class TransactionUiModel(
     val id: Long = 0,
     val category: CategoryUIModel = CategoryUIModel(),
@@ -21,7 +23,7 @@ fun Transaction.toUiModel(zoneId: ZoneId) : TransactionUiModel {
     return TransactionUiModel(
         id = id,
         category = category.toUiModel(),
-        amount = "${formatDouble(amount)} ${formatCurrency(account.currency)}",
+        amount = formatSum(amount, account.currency),
         transactionDate = formatter.format(transactionDate),
         comment = if (comment == "") null else comment
     )

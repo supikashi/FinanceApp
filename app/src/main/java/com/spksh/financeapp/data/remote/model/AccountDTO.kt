@@ -3,6 +3,9 @@ package com.spksh.financeapp.data.remote.model
 import com.spksh.financeapp.domain.model.Account
 import kotlinx.serialization.Serializable
 
+/**
+ * DTO-модель аккаунта, используемая для парсинга данных из API.
+ */
 @Serializable
 data class AccountDTO(
     val id: Long = 0,

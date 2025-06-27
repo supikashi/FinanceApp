@@ -2,32 +2,28 @@ package com.spksh.financeapp.ui.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.spksh.financeapp.domain.useCase.GetAccountsUseCase
 import com.spksh.financeapp.domain.useCase.GetTodayUseCase
-import com.spksh.financeapp.domain.useCase.GetTransactionsByPeriodUseCase
-import com.spksh.financeapp.domain.useCase.GetZoneIdUseCase
-import com.spksh.financeapp.ui.features.formatCurrency
-import com.spksh.financeapp.ui.features.formatDouble
+import com.spksh.financeapp.ui.features.HistoryLoader
 import com.spksh.financeapp.ui.features.multipleFetch
-import com.spksh.financeapp.ui.model.toUiModel
-import com.spksh.financeapp.ui.state.HistoryUiState
+import com.spksh.financeapp.ui.state.HistoryScreenState
+import com.spksh.financeapp.ui.state.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 
+/**
+ * Общая вьюмодель для экранов историй доходов и расходов
+ */
 open class HistoryViewModel(
     private val getTodayUseCase: GetTodayUseCase,
-    private val getZoneIdUseCase: GetZoneIdUseCase,
-    private val getAccountsUseCase: GetAccountsUseCase,
-    private val getTransactionsByPeriodUseCase: GetTransactionsByPeriodUseCase,
+    private val historyLoader: HistoryLoader,
     private val isIncome: Boolean
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow<HistoryUiState>(HistoryUiState.Loading)
-    val uiState: StateFlow<HistoryUiState> = _uiState
+    private val _uiState = MutableStateFlow<UiState<HistoryScreenState>>(UiState.Loading)
+    val uiState: StateFlow<UiState<HistoryScreenState>> = _uiState
 
     init {
         fetchDataDefault()
@@ -37,31 +33,15 @@ open class HistoryViewModel(
         startDate: LocalDate,
         endDate: LocalDate
     ) = viewModelScope.launch {
-        _uiState.value = HistoryUiState.Loading
+        _uiState.value = UiState.Loading
         try {
             multipleFetch(
                 fetch = {
-                    val zoneId = getZoneIdUseCase()
-                    val account = getAccountsUseCase().first()
-                    val transactions = getTransactionsByPeriodUseCase(
-                        accountId = account.id,
-                        startDate = startDate,
-                        endDate = endDate
-                    ).filter { it.category.isIncome == isIncome }
-                    _uiState.value = HistoryUiState.Success(
-                        startDate = startDate,
-                        endDate = endDate,
-                        startDateString = startDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
-                        endDateString = endDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
-                        sum = "${formatDouble(transactions.sumOf { it.amount })} ${formatCurrency(account.currency)}",
-                        transactions = transactions
-                            .sortedBy { it.transactionDate }
-                            .map {it.toUiModel(zoneId)}
-                    )
+                    _uiState.value = historyLoader.load(isIncome, startDate, endDate)
                 }
             )
         } catch (e: Throwable) {
-            _uiState.value = HistoryUiState.Error(e.message ?: "Unknown error")
+            _uiState.value = UiState.Error(e.message ?: "Unknown error")
         }
     }
 
@@ -81,16 +61,10 @@ open class HistoryViewModel(
                 .toLocalDate()
             fetchData(
                 startDate = startDate,
-                endDate = when(uiState.value) {
-                    is HistoryUiState.Success -> {
-                        (uiState.value as HistoryUiState.Success).endDate
-                    }
-                    is HistoryUiState.Loading -> {
-                        getTodayUseCase()
-                    }
-                    is HistoryUiState.Error -> {
-                        getTodayUseCase()
-                    }
+                endDate = if (uiState.value is UiState.Success<HistoryScreenState>) {
+                    (uiState.value as UiState.Success<HistoryScreenState>).data.endDate
+                } else {
+                    startDate
                 }
             )
         }
@@ -103,16 +77,10 @@ open class HistoryViewModel(
                 .atOffset(ZoneOffset.UTC)
                 .toLocalDate()
             fetchData(
-                startDate = when(uiState.value) {
-                    is HistoryUiState.Success -> {
-                        (uiState.value as HistoryUiState.Success).startDate
-                    }
-                    is HistoryUiState.Loading -> {
-                        getTodayUseCase()
-                    }
-                    is HistoryUiState.Error -> {
-                        getTodayUseCase()
-                    }
+                startDate = if (uiState.value is UiState.Success<HistoryScreenState>) {
+                    (uiState.value as UiState.Success<HistoryScreenState>).data.startDate
+                } else {
+                    endDate
                 },
                 endDate = endDate
             )

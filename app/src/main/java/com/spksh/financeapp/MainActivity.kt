@@ -14,6 +14,15 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        installCustomSplash()
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            MainScreen()
+        }
+    }
+
+    private fun installCustomSplash() {
         installSplashScreen().apply {
             setKeepOnScreenCondition {
                 false
@@ -29,12 +38,6 @@ class MainActivity : ComponentActivity() {
                 zoomX.doOnEnd { screen.remove() }
                 zoomX.start()
             }
-        }
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-
-        setContent {
-            MainScreen()
         }
     }
 }

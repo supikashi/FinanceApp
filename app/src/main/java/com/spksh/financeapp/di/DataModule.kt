@@ -1,10 +1,10 @@
 package com.spksh.financeapp.di
 
-import com.spksh.financeapp.data.NetworkConnectivityObserver
-import com.spksh.financeapp.data.repository.AccountRepositoryImpl
-import com.spksh.financeapp.data.repository.CategoryRepositoryImpl
-import com.spksh.financeapp.data.repository.TransactionRepositoryImpl
-import com.spksh.financeapp.domain.ConnectivityObserver
+import com.spksh.financeapp.data.connectivity.NetworkConnectivityObserver
+import com.spksh.financeapp.data.remote.repository.AccountRepositoryImpl
+import com.spksh.financeapp.data.remote.repository.CategoryRepositoryImpl
+import com.spksh.financeapp.data.remote.repository.TransactionRepositoryImpl
+import com.spksh.financeapp.domain.connectivity.ConnectivityObserver
 import com.spksh.financeapp.domain.repository.AccountRepository
 import com.spksh.financeapp.domain.repository.CategoryRepository
 import com.spksh.financeapp.domain.repository.TransactionRepository
@@ -14,7 +14,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-
+/**
+ * DI-модуль, предоставляющий реализации интерфейсов источников данных
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class DataModule {

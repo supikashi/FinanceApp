@@ -32,8 +32,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.spksh.financeapp.MockData
-import com.spksh.financeapp.domain.ConnectivityObserver
+import com.spksh.financeapp.domain.connectivity.ConnectivityObserver
 import com.spksh.financeapp.ui.components.NoInternetBanner
 import com.spksh.financeapp.ui.navigation.Account
 import com.spksh.financeapp.ui.navigation.BottomBarScreen

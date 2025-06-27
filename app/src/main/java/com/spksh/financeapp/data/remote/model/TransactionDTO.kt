@@ -4,6 +4,9 @@ import com.spksh.financeapp.domain.model.Transaction
 import kotlinx.serialization.Serializable
 import java.time.Instant
 
+/**
+ * DTO-модель транзакции, используемая для парсинга данных из API.
+ */
 @Serializable
 data class TransactionDTO(
     val id: Long = 0,

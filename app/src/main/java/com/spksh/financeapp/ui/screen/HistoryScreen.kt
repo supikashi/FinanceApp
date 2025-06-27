@@ -29,9 +29,10 @@ import com.spksh.financeapp.R
 import com.spksh.financeapp.ui.components.DatePickerWrap
 import com.spksh.financeapp.ui.components.ErrorScreen
 import com.spksh.financeapp.ui.components.ListItem
+import com.spksh.financeapp.ui.components.ScreenStateHandler
 import com.spksh.financeapp.ui.components.TopBar
-import com.spksh.financeapp.ui.state.CategoryUiState
-import com.spksh.financeapp.ui.state.HistoryUiState
+import com.spksh.financeapp.ui.state.HistoryScreenState
+import com.spksh.financeapp.ui.state.UiState
 import com.spksh.financeapp.ui.viewModel.HistoryViewModel
 import java.time.LocalDate
 
@@ -52,7 +53,7 @@ fun HistoryScreen(
 
 @Composable
 private fun HistoryScreenImpl(
-    state: HistoryUiState,
+    state: UiState<HistoryScreenState>,
     onStartDateSelected: (Long?) -> Unit = {},
     onEndDateSelected: (Long?) -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -71,50 +72,36 @@ private fun HistoryScreenImpl(
                 leftIconOnClick = onBackClick,
                 leftIconContentDescription = null,
             )
-            when (state) {
-                is HistoryUiState.Error -> {
-                    ErrorScreen(
-                        onRetryClick = onRetryClick
-                    )
-                }
-                HistoryUiState.Loading -> {
-                    Box(
-                        modifier = Modifier
-                            .background(color = MaterialTheme.colorScheme.background)
-                            .fillMaxSize()
-                    ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(alignment = Alignment.Center)
-                        )
-                    }
-                }
-                is HistoryUiState.Success -> {
+            ScreenStateHandler(
+                state = state,
+                content = {
                     HistoryScreenSuccess(
-                        state = state,
+                        state = it,
                         onStartDateSelected = onStartDateSelected,
                         onEndDateSelected = onEndDateSelected
                     )
-                }
-            }
+                },
+                onRetryClick = onRetryClick
+            )
         }
     }
 }
 
 @Composable
 private fun HistoryScreenSuccess(
-    state: HistoryUiState.Success,
+    state: UiState.Success<HistoryScreenState>,
     onStartDateSelected: (Long?) -> Unit = {},
     onEndDateSelected: (Long?) -> Unit = {}
 ) {
     DatePickListItem(
         leadingText = "Начало",
-        dateText = state.startDateString,
+        dateText = state.data.startDateString,
         onDateSelected = onStartDateSelected
     )
     HorizontalDivider()
     DatePickListItem(
         leadingText = "Конец",
-        dateText = state.endDateString,
+        dateText = state.data.endDateString,
         onDateSelected = onEndDateSelected
     )
     HorizontalDivider()
@@ -132,14 +119,14 @@ private fun HistoryScreenSuccess(
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
-                text = state.sum,
+                text = state.data.sum,
                 style = MaterialTheme.typography.bodyLarge
             )
         }
     }
     HorizontalDivider()
     LazyColumn {
-        items(state.transactions) { transaction ->
+        items(state.data.transactions) { transaction ->
             ListItem(
                 leadIcon = transaction.category.emoji,
                 isClickable = true
@@ -231,13 +218,15 @@ fun DatePickListItem(
 @Composable
 fun HistoryScreenPreview() {
     HistoryScreenImpl(
-        state = HistoryUiState.Success(
-            startDate = LocalDate.MIN,
-            endDate = LocalDate.MIN,
-            startDateString = MockData.historyStartDate,
-            endDateString = MockData.historyEndDate,
-            sum = MockData.historySum,
-            transactions = MockData.transactions,
+        state = UiState.Success(
+            data = HistoryScreenState(
+                startDate = LocalDate.MIN,
+                endDate = LocalDate.MIN,
+                startDateString = MockData.historyStartDate,
+                endDateString = MockData.historyEndDate,
+                sum = MockData.historySum,
+                transactions = MockData.transactions,
+            )
         )
     )
 }

@@ -1,11 +1,13 @@
-package com.spksh.financeapp.data.repository
+package com.spksh.financeapp.data.remote.repository
 
 import com.spksh.financeapp.data.remote.api.TransactionApiService
 import com.spksh.financeapp.domain.model.Transaction
 import com.spksh.financeapp.domain.repository.TransactionRepository
 import jakarta.inject.Inject
-import kotlinx.coroutines.delay
 
+/**
+ * Реализация [TransactionRepository], получающая данные о транзакциях из API
+ */
 class TransactionRepositoryImpl @Inject constructor(
     private val api: TransactionApiService
 ) : TransactionRepository {
@@ -14,7 +16,6 @@ class TransactionRepositoryImpl @Inject constructor(
         startDate: String?,
         endDate: String?
     ): List<Transaction> {
-        delay(100)
         return api.getCategories(accountId, startDate, endDate).map { it.toTransaction() }
     }
 }

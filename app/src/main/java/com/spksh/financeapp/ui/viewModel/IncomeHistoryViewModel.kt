@@ -1,22 +1,19 @@
 package com.spksh.financeapp.ui.viewModel
 
-import com.spksh.financeapp.domain.useCase.GetAccountsUseCase
 import com.spksh.financeapp.domain.useCase.GetTodayUseCase
-import com.spksh.financeapp.domain.useCase.GetTransactionsByPeriodUseCase
-import com.spksh.financeapp.domain.useCase.GetZoneIdUseCase
+import com.spksh.financeapp.ui.features.HistoryLoader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 
+/**
+ * Наследник [HistoryViewModel] для экрана истории доходов
+ */
 @HiltViewModel
 class IncomeHistoryViewModel @Inject constructor(
     getTodayUseCase: GetTodayUseCase,
-    getZoneIdUseCase: GetZoneIdUseCase,
-    getAccountsUseCase: GetAccountsUseCase,
-    getTransactionsByPeriodUseCase: GetTransactionsByPeriodUseCase
+    historyLoader: HistoryLoader,
 ) : HistoryViewModel(
     getTodayUseCase,
-    getZoneIdUseCase,
-    getAccountsUseCase,
-    getTransactionsByPeriodUseCase,
+    historyLoader,
     true
 )

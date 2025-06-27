@@ -2,6 +2,9 @@ package com.spksh.financeapp.domain.model
 
 import java.time.Instant
 
+/**
+ * Доменная модель транзакции
+ */
 data class Transaction(
     val id: Long = 0,
     val account: Account = Account(),

@@ -1,5 +1,8 @@
 package com.spksh.financeapp.domain.model
 
+/**
+ * Доменная модель счета
+ */
 data class Account(
     val id: Long = 0,
     val userId: Long = 0,
