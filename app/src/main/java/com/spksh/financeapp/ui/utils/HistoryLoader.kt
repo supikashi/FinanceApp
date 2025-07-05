@@ -1,7 +1,6 @@
-package com.spksh.financeapp.ui.features
+package com.spksh.financeapp.ui.utils
 
-import com.spksh.financeapp.domain.useCase.GetAccountsUseCase
-import com.spksh.financeapp.domain.useCase.GetTodayUseCase
+import com.spksh.financeapp.domain.model.Account
 import com.spksh.financeapp.domain.useCase.GetTransactionsByPeriodUseCase
 import com.spksh.financeapp.domain.useCase.GetZoneIdUseCase
 import com.spksh.financeapp.ui.model.toUiModel
@@ -16,12 +15,16 @@ import java.time.format.DateTimeFormatter
  */
 class HistoryLoader @Inject constructor(
     private val getZoneIdUseCase: GetZoneIdUseCase,
-    private val getAccountsUseCase: GetAccountsUseCase,
     private val getTransactionsByPeriodUseCase: GetTransactionsByPeriodUseCase
 ) {
-    suspend fun load(isIncome: Boolean, startDate: LocalDate, endDate: LocalDate) : UiState.Success<HistoryScreenState> {
+    suspend fun load(
+        accountsList: List<Account>,
+        isIncome: Boolean,
+        startDate: LocalDate,
+        endDate: LocalDate
+    ) : UiState.Success<HistoryScreenState> {
         val zoneId = getZoneIdUseCase()
-        val account = getAccountsUseCase().first()
+        val account = accountsList.first()
         val transactions = getTransactionsByPeriodUseCase(
             accountId = account.id,
             startDate = startDate,

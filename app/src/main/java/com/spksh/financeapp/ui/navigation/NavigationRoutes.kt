@@ -9,6 +9,9 @@ object SpendingGraph
 object IncomeGraph
 
 @Serializable
+object AccountGraph
+
+@Serializable
 object Spending
 
 @Serializable
@@ -28,3 +31,6 @@ object SpendingHistory
 
 @Serializable
 object IncomeHistory
+
+@Serializable
+data class AccountUpdate(val id: Long)

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.spksh.financeapp.ui.theme.red
 
 @Composable
 fun NoInternetBanner(isVisible: Boolean) {
@@ -22,7 +23,7 @@ fun NoInternetBanner(isVisible: Boolean) {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .background(Color.Red)
+            .background(red)
             .padding(16.dp),
     )
 }

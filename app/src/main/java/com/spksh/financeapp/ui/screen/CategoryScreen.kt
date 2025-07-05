@@ -14,6 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,14 +45,16 @@ fun CategoryScreen(
     val state = viewModel.uiState.collectAsStateWithLifecycle().value
     CategoryScreenImpl(
         state = state,
-        onRetryClick = {viewModel.fetchData()}
+        onRetryClick = { viewModel.fetchData() },
+        onValueChange = { viewModel.filterCategories(it) }
     )
 }
 
 @Composable
 private fun CategoryScreenImpl(
     state: UiState<CategoryScreenState>,
-    onRetryClick: () -> Unit = {}
+    onRetryClick: () -> Unit = {},
+    onValueChange: (String) -> Unit = {}
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -58,7 +64,12 @@ private fun CategoryScreenImpl(
         )
         ScreenStateHandler(
             state = state,
-            content = { CategoryScreenSuccess(it) },
+            content = {
+                CategoryScreenSuccess(
+                    state = it,
+                    onValueChange = onValueChange
+                )
+            },
             onRetryClick = onRetryClick
         )
     }
@@ -66,11 +77,16 @@ private fun CategoryScreenImpl(
 
 @Composable
 private fun CategoryScreenSuccess(
-    state: UiState.Success<CategoryScreenState>
+    state: UiState.Success<CategoryScreenState>,
+    onValueChange: (String) -> Unit
 ) {
+    var filterName by remember { mutableStateOf("") }
     TextField(
-        value = "",
-        onValueChange = {},
+        value = filterName,
+        onValueChange = {
+            filterName = it
+            onValueChange(it)
+        },
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 56.dp),
@@ -101,7 +117,7 @@ private fun CategoryScreenSuccess(
     )
     HorizontalDivider()
     LazyColumn {
-        items(state.data.categories) { category ->
+        items(state.data.filteredCategories) { category ->
             ListItem(
                 leadIcon = category.emoji,
                 showTrailIcon = false,
@@ -123,6 +139,6 @@ private fun CategoryScreenSuccess(
 @Composable
 fun CategoriesScreenPreview() {
     CategoryScreenImpl(
-        state = UiState.Success(data = CategoryScreenState(MockData.categoriesList))
+        state = UiState.Success(data = CategoryScreenState(MockData.categoriesList, emptyList()))
     )
 }

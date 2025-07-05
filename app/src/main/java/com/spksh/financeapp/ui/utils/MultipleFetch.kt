@@ -1,4 +1,4 @@
-package com.spksh.financeapp.ui.features
+package com.spksh.financeapp.ui.utils
 
 import kotlinx.coroutines.delay
 import retrofit2.HttpException

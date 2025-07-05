@@ -1,4 +1,4 @@
-package com.spksh.financeapp.ui.features
+package com.spksh.financeapp.ui.utils
 
 /**
  * форматирует валюту

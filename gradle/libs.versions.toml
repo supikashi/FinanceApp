@@ -1,6 +1,6 @@
 [versions]
 accompanistSystemuicontrollerVersion = "<последняя‑версия>"
-agp = "8.8.2"
+agp = "8.11.0"
 coreSplashscreenVersion = "1.0.1"
 hiltAndroidCompilerVersion = "2.56.2"
 hiltAndroidVersion = "2.56.2"

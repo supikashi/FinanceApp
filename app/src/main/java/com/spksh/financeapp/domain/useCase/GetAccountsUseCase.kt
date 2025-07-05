@@ -4,15 +4,14 @@ import com.spksh.financeapp.domain.model.Account
 import com.spksh.financeapp.domain.repository.AccountRepository
 import jakarta.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
 
 /**
  * Use-case для получения списка аккаунтов из [AccountRepository]
  */
-class GetAccountsUseCase @Inject constructor(
+class GetAccountsFlowUseCase @Inject constructor(
     private val repository: AccountRepository
 ) {
-    suspend operator fun invoke(): List<Account> = withContext(Dispatchers.IO)  {
-        repository.getAccounts()
-    }
+    operator fun invoke(): StateFlow<List<Account>> = repository.getAccountsFlow()
 }

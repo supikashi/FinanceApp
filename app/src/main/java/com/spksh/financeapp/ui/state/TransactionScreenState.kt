@@ -1,7 +1,7 @@
 package com.spksh.financeapp.ui.state
 
 import com.spksh.financeapp.domain.model.Transaction
-import com.spksh.financeapp.ui.features.formatSum
+import com.spksh.financeapp.ui.utils.formatSum
 import com.spksh.financeapp.ui.model.CategoryWithSumUIModel
 
 /**

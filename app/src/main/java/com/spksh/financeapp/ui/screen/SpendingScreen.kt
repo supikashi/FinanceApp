@@ -44,7 +44,7 @@ fun SpendingScreen(
                 restoreState = true
             }
         },
-        onRetryClick = {viewModel.fetchData()}
+        onRetryClick = {viewModel.retryLoad()}
     )
 }
 
@@ -112,7 +112,9 @@ fun SpendingScreenSuccess(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Column {
+                    Column(
+                        modifier = Modifier.weight(1f)
+                    ) {
                         Text(
                             text = category.name,
                             maxLines = 1,
