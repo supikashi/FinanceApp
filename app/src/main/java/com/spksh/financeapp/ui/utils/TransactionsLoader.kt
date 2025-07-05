@@ -1,6 +1,7 @@
-package com.spksh.financeapp.ui.features
+package com.spksh.financeapp.ui.utils
 
-import com.spksh.financeapp.domain.useCase.GetAccountsUseCase
+import com.spksh.financeapp.domain.model.Account
+import com.spksh.financeapp.domain.useCase.GetAccountsFlowUseCase
 import com.spksh.financeapp.domain.useCase.GetTodayUseCase
 import com.spksh.financeapp.domain.useCase.GetTransactionsByPeriodUseCase
 import com.spksh.financeapp.ui.state.TransactionScreenState
@@ -12,11 +13,10 @@ import jakarta.inject.Inject
  */
 class TransactionLoader @Inject constructor(
     private val getTodayUseCase: GetTodayUseCase,
-    private val getAccountsUseCase: GetAccountsUseCase,
     private val getTransactionsByPeriodUseCase: GetTransactionsByPeriodUseCase
 ) {
-    suspend fun load(isIncome: Boolean): UiState.Success<TransactionScreenState> {
-        val account = getAccountsUseCase().first()
+    suspend fun load(accountsList: List<Account>, isIncome: Boolean): UiState.Success<TransactionScreenState> {
+        val account = accountsList.first()
         val today = getTodayUseCase()
         return UiState.Success(
             data = TransactionScreenState.getByTransactions(

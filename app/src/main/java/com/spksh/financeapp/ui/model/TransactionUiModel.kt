@@ -1,7 +1,7 @@
 package com.spksh.financeapp.ui.model
 
 import com.spksh.financeapp.domain.model.Transaction
-import com.spksh.financeapp.ui.features.formatSum
+import com.spksh.financeapp.ui.utils.formatSum
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 

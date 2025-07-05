@@ -35,6 +35,8 @@ import androidx.navigation.navigation
 import com.spksh.financeapp.domain.connectivity.ConnectivityObserver
 import com.spksh.financeapp.ui.components.NoInternetBanner
 import com.spksh.financeapp.ui.navigation.Account
+import com.spksh.financeapp.ui.navigation.AccountGraph
+import com.spksh.financeapp.ui.navigation.AccountUpdate
 import com.spksh.financeapp.ui.navigation.BottomBarScreen
 import com.spksh.financeapp.ui.navigation.Categories
 import com.spksh.financeapp.ui.navigation.Income
@@ -45,6 +47,7 @@ import com.spksh.financeapp.ui.navigation.Spending
 import com.spksh.financeapp.ui.navigation.SpendingGraph
 import com.spksh.financeapp.ui.navigation.SpendingHistory
 import com.spksh.financeapp.ui.theme.FinanceAppTheme
+import com.spksh.financeapp.ui.viewModel.AccountUpdateViewModel
 import com.spksh.financeapp.ui.viewModel.AccountViewModel
 import com.spksh.financeapp.ui.viewModel.CategoryViewModel
 import com.spksh.financeapp.ui.viewModel.IncomeHistoryViewModel
@@ -151,11 +154,21 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier) {
                 )
             }
         }
-        composable<Account> {
-            val viewModel: AccountViewModel = hiltViewModel()
-            AccountScreen(
-                viewModel = viewModel
-            )
+        navigation<AccountGraph>(startDestination = Account) {
+            composable<Account> {
+                val viewModel: AccountViewModel = hiltViewModel()
+                AccountScreen(
+                    viewModel = viewModel,
+                    navController = navController
+                )
+            }
+            composable<AccountUpdate> {
+                val viewModel: AccountUpdateViewModel = hiltViewModel()
+                AccountUpdateScreen(
+                    viewModel = viewModel,
+                    navController = navController
+                )
+            }
         }
         composable<Categories> {
             val viewModel: CategoryViewModel = hiltViewModel()

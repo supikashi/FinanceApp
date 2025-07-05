@@ -47,7 +47,7 @@ fun HistoryScreen(
         onBackClick = { navController.popBackStack() },
         onStartDateSelected = { viewModel.changeStartDate(it) },
         onEndDateSelected = { viewModel.changeEndDate(it) },
-        onRetryClick = { viewModel.fetchDataDefault() }
+        onRetryClick = { viewModel.retryLoad() }
     )
 }
 
@@ -136,7 +136,9 @@ private fun HistoryScreenSuccess(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Column {
+                    Column(
+                        modifier = Modifier.weight(1f)
+                    ) {
                         Text(
                             text = transaction.category.name,
                             maxLines = 1,

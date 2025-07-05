@@ -6,5 +6,6 @@ import com.spksh.financeapp.ui.model.CategoryUIModel
  * Модель для экрана категорий
  */
 data class CategoryScreenState(
-    val categories: List<CategoryUIModel>
+    val categories: List<CategoryUIModel>,
+    val filteredCategories: List<CategoryUIModel>
 )

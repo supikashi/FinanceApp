@@ -2,11 +2,16 @@ package com.spksh.financeapp.ui.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spksh.financeapp.domain.model.Account
+import com.spksh.financeapp.domain.useCase.GetAccountsFlowUseCase
 import com.spksh.financeapp.domain.useCase.GetTodayUseCase
-import com.spksh.financeapp.ui.features.HistoryLoader
-import com.spksh.financeapp.ui.features.multipleFetch
+import com.spksh.financeapp.domain.useCase.LoadAccountsUseCase
+import com.spksh.financeapp.ui.utils.HistoryLoader
+import com.spksh.financeapp.ui.utils.multipleFetch
 import com.spksh.financeapp.ui.state.HistoryScreenState
 import com.spksh.financeapp.ui.state.UiState
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -18,36 +23,62 @@ import java.time.ZoneOffset
  * Общая вьюмодель для экранов историй доходов и расходов
  */
 open class HistoryViewModel(
+    getAccountsFlowUseCase: GetAccountsFlowUseCase,
+    private val loadAccountsUseCase: LoadAccountsUseCase,
     private val getTodayUseCase: GetTodayUseCase,
     private val historyLoader: HistoryLoader,
     private val isIncome: Boolean
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<UiState<HistoryScreenState>>(UiState.Loading)
+    private val accountsFlow = getAccountsFlowUseCase()
     val uiState: StateFlow<UiState<HistoryScreenState>> = _uiState
+    private var fetchJob: Job? = null
 
     init {
-        fetchDataDefault()
-    }
-
-    fun fetchData(
-        startDate: LocalDate,
-        endDate: LocalDate
-    ) = viewModelScope.launch {
-        _uiState.value = UiState.Loading
-        try {
-            multipleFetch(
-                fetch = {
-                    _uiState.value = historyLoader.load(isIncome, startDate, endDate)
+        viewModelScope.launch {
+            accountsFlow.collect { accounts ->
+                (_uiState.value as? UiState.Success<HistoryScreenState>)?.data?.let {
+                    fetchData(accounts, it.startDate, it.endDate)
+                } ?: run {
+                    fetchDataDefault(accounts)
                 }
-            )
-        } catch (e: Throwable) {
-            _uiState.value = UiState.Error(e.message ?: "Unknown error")
+            }
         }
     }
 
-    fun fetchDataDefault() {
+    fun retryLoad() {
+        viewModelScope.launch {
+            loadAccountsUseCase()
+        }
+    }
+
+    fun fetchData(
+        accountsList: List<Account>,
+        startDate: LocalDate,
+        endDate: LocalDate
+    ) {
+        fetchJob?.cancel()
+        fetchJob = viewModelScope.launch {
+            _uiState.value = UiState.Loading
+            try {
+                multipleFetch(
+                    fetch = {
+                        _uiState.value = historyLoader.load(accountsList, isIncome, startDate, endDate)
+                    }
+                )
+            } catch (e: CancellationException) {
+            } catch (e: Throwable) {
+                _uiState.value = UiState.Error(e.message ?: "Unknown error")
+            }
+        }
+    }
+
+    fun fetchDataDefault(
+        accountsList: List<Account>,
+    ) {
         val today = getTodayUseCase()
         fetchData(
+            accountsList = accountsList,
             startDate = today.withDayOfMonth(1),
             endDate = today
         )
@@ -60,6 +91,7 @@ open class HistoryViewModel(
                 .atOffset(ZoneOffset.UTC)
                 .toLocalDate()
             fetchData(
+                accountsList = accountsFlow.value,
                 startDate = startDate,
                 endDate = if (uiState.value is UiState.Success<HistoryScreenState>) {
                     (uiState.value as UiState.Success<HistoryScreenState>).data.endDate
@@ -77,6 +109,7 @@ open class HistoryViewModel(
                 .atOffset(ZoneOffset.UTC)
                 .toLocalDate()
             fetchData(
+                accountsList = accountsFlow.value,
                 startDate = if (uiState.value is UiState.Success<HistoryScreenState>) {
                     (uiState.value as UiState.Success<HistoryScreenState>).data.startDate
                 } else {

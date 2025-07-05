@@ -8,41 +8,65 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.spksh.financeapp.MockData
 import com.spksh.financeapp.R
 import com.spksh.financeapp.ui.components.AddButton
 import com.spksh.financeapp.ui.components.ListItem
 import com.spksh.financeapp.ui.components.ScreenStateHandler
 import com.spksh.financeapp.ui.components.TopBar
+import com.spksh.financeapp.ui.navigation.AccountUpdate
 import com.spksh.financeapp.ui.state.AccountScreenState
 import com.spksh.financeapp.ui.state.UiState
 import com.spksh.financeapp.ui.viewModel.AccountViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun AccountScreen(
-    viewModel: AccountViewModel
+    viewModel: AccountViewModel,
+    navController: NavController
 ) {
     val state = viewModel.uiState.collectAsStateWithLifecycle().value
     AccountScreenImpl(
         state = state,
-        onRetryClick = {viewModel.fetchAccount()}
+        onAccountClick = {
+            navController.navigate(AccountUpdate(it)) {
+                launchSingleTop = true
+                restoreState = true
+            }
+        },
+        onRetryClick = {viewModel.retryLoad()}
     )
 }
 
 @Composable
 private fun AccountScreenImpl(
     state: UiState<AccountScreenState>,
+    onAccountClick: (Long) -> Unit = {},
     onRetryClick: () -> Unit = {}
 ) {
     Box {
@@ -57,7 +81,12 @@ private fun AccountScreenImpl(
             )
             ScreenStateHandler(
                 state = state,
-                content = { AccountScreenSuccess(it) },
+                content = {
+                    AccountScreenSuccess(
+                        state = it,
+                        onAccountClick = onAccountClick
+                    )
+                },
                 onRetryClick = onRetryClick
             )
         }
@@ -69,7 +98,8 @@ private fun AccountScreenImpl(
 
 @Composable
 private fun AccountScreenSuccess(
-    state: UiState.Success<AccountScreenState>
+    state: UiState.Success<AccountScreenState>,
+    onAccountClick: (Long) -> Unit = {},
 ) {
     LazyColumn {
         items(state.data.accounts) { account ->
@@ -78,15 +108,19 @@ private fun AccountScreenSuccess(
                 minHeight = 56.dp,
                 containerColor = MaterialTheme.colorScheme.secondary,
                 emojiContainerColor = MaterialTheme.colorScheme.background,
-                isClickable = true
+                isClickable = true,
+                onClick = {
+                    onAccountClick(account.id)
+                }
             ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "Баланс",
-                        style = MaterialTheme.typography.bodyLarge
+                        text = account.name,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.weight(1f)
                     )
                     Text(
                         text = account.balance,
@@ -99,7 +133,10 @@ private fun AccountScreenSuccess(
             ListItem(
                 minHeight = 56.dp,
                 containerColor = MaterialTheme.colorScheme.secondary,
-                isClickable = true
+                isClickable = true,
+                onClick = {
+                    onAccountClick(account.id)
+                }
             ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,

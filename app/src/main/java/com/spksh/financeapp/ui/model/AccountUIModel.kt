@@ -1,8 +1,8 @@
 package com.spksh.financeapp.ui.model
 
 import com.spksh.financeapp.domain.model.Account
-import com.spksh.financeapp.ui.features.formatCurrency
-import com.spksh.financeapp.ui.features.formatSum
+import com.spksh.financeapp.ui.utils.formatCurrency
+import com.spksh.financeapp.ui.utils.formatSum
 
 /**
  * UI-модель счета

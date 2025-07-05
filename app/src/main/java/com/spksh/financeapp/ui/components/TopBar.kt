@@ -46,7 +46,10 @@ fun TopBar(
                 onClick = leftIconOnClick,
                 modifier = Modifier.size(size.dp)
             ) {
-                Icon(painterResource(leftIcon), leftIconContentDescription)
+                Icon(
+                    painter = painterResource(leftIcon),
+                    contentDescription = leftIconContentDescription
+                )
             }
         } else {
             Spacer(Modifier.size(size.dp))
@@ -71,7 +74,10 @@ fun TopBar(
                 onClick = rightIconOnClick,
                 modifier = Modifier.size(size.dp)
             ) {
-                Icon(painterResource(rightIcon), rightIconContentDescription, tint = MaterialTheme.colorScheme.outline)
+                Icon(
+                    painter = painterResource(rightIcon),
+                    contentDescription = rightIconContentDescription
+                )
             }
         } else {
             Spacer(Modifier.size(size.dp))
