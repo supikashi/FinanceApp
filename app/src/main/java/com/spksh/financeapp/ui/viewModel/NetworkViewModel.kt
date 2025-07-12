@@ -2,8 +2,7 @@ package com.spksh.financeapp.ui.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.spksh.financeapp.domain.connectivity.ConnectivityObserver
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.spksh.domain.connectivity.ConnectivityObserver
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +11,7 @@ import kotlinx.coroutines.flow.stateIn
 /**
  * Вьюмодель для отслеживания сети
  */
-@HiltViewModel
+
 class NetworkViewModel @Inject constructor(
     observer: ConnectivityObserver
 ) : ViewModel() {

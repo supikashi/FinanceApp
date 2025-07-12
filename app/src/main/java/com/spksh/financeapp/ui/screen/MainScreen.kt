@@ -21,45 +21,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navigation
-import com.spksh.financeapp.domain.connectivity.ConnectivityObserver
-import com.spksh.financeapp.ui.components.NoInternetBanner
-import com.spksh.financeapp.ui.navigation.Account
-import com.spksh.financeapp.ui.navigation.AccountGraph
-import com.spksh.financeapp.ui.navigation.AccountUpdate
+import com.spksh.account.di.AccountDependencies
+import com.spksh.account.ui.navigation.accountNav
+import com.spksh.category.ui.navigation.categoryNav
+import com.spksh.domain.connectivity.ConnectivityObserver
+import com.spksh.financeapp.di.AppComponent
 import com.spksh.financeapp.ui.navigation.BottomBarScreen
-import com.spksh.financeapp.ui.navigation.Categories
-import com.spksh.financeapp.ui.navigation.Income
-import com.spksh.financeapp.ui.navigation.IncomeGraph
-import com.spksh.financeapp.ui.navigation.IncomeHistory
-import com.spksh.financeapp.ui.navigation.Settings
-import com.spksh.financeapp.ui.navigation.Spending
-import com.spksh.financeapp.ui.navigation.SpendingGraph
-import com.spksh.financeapp.ui.navigation.SpendingHistory
-import com.spksh.financeapp.ui.theme.FinanceAppTheme
-import com.spksh.financeapp.ui.viewModel.AccountUpdateViewModel
-import com.spksh.financeapp.ui.viewModel.AccountViewModel
-import com.spksh.financeapp.ui.viewModel.CategoryViewModel
-import com.spksh.financeapp.ui.viewModel.IncomeHistoryViewModel
-import com.spksh.financeapp.ui.viewModel.IncomeViewModel
 import com.spksh.financeapp.ui.viewModel.NetworkViewModel
-import com.spksh.financeapp.ui.viewModel.SpendingHistoryViewModel
-import com.spksh.financeapp.ui.viewModel.SpendingViewModel
+import com.spksh.settings.ui.settingsNav
+import com.spksh.transactions.ui.navigation.SpendingGraph
+import com.spksh.transactions.ui.navigation.incomeNav
+import com.spksh.transactions.ui.navigation.spendingNav
+import com.spksh.ui.components.NoInternetBanner
+import com.spksh.ui.theme.FinanceAppTheme
 
 @Composable
-fun MainScreen() {
-    val vm: NetworkViewModel = hiltViewModel()
-    val status by vm.status.collectAsState()
+fun MainScreen(
+    viewModelFactory: ViewModelProvider.Factory,
+    appComponent: AppComponent
+) {
+    val viewModel: NetworkViewModel = viewModel(factory = viewModelFactory)
+    val status by viewModel.status.collectAsState()
     val navController = rememberNavController()
     FinanceAppTheme {
         Scaffold(
@@ -75,7 +67,11 @@ fun MainScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 NoInternetBanner(isVisible = status != ConnectivityObserver.Status.Available)
-                AppNavigation(navController, Modifier.background(MaterialTheme.colorScheme.background))
+                AppNavigation(
+                    navController,
+                    Modifier.background(MaterialTheme.colorScheme.background),
+                    appComponent
+                )
             }
         }
     }
@@ -120,70 +116,22 @@ fun BottomBar(navController: NavController) {
 }
 
 @Composable
-fun AppNavigation(navController: NavHostController, modifier: Modifier) {
+fun AppNavigation(
+    navController: NavHostController,
+    modifier: Modifier,
+    dependencies: AppComponent
+) {
     NavHost(navController, startDestination = SpendingGraph, modifier) {
-        navigation<SpendingGraph>(startDestination = Spending) {
-            composable<Spending> {
-                val viewModel: SpendingViewModel = hiltViewModel()
-                SpendingScreen(
-                    viewModel = viewModel,
-                    navController = navController
-                )
-            }
-            composable<SpendingHistory> {
-                val viewModel: SpendingHistoryViewModel = hiltViewModel()
-                HistoryScreen(
-                    viewModel = viewModel,
-                    navController = navController,
-                )
-            }
-        }
-        navigation<IncomeGraph>(startDestination = Income) {
-            composable<Income> {
-                val viewModel: IncomeViewModel = hiltViewModel()
-                IncomeScreen(
-                    viewModel = viewModel,
-                    navController = navController
-                )
-            }
-            composable<IncomeHistory> {
-                val viewModel: IncomeHistoryViewModel = hiltViewModel()
-                HistoryScreen(
-                    viewModel = viewModel,
-                    navController = navController
-                )
-            }
-        }
-        navigation<AccountGraph>(startDestination = Account) {
-            composable<Account> {
-                val viewModel: AccountViewModel = hiltViewModel()
-                AccountScreen(
-                    viewModel = viewModel,
-                    navController = navController
-                )
-            }
-            composable<AccountUpdate> {
-                val viewModel: AccountUpdateViewModel = hiltViewModel()
-                AccountUpdateScreen(
-                    viewModel = viewModel,
-                    navController = navController
-                )
-            }
-        }
-        composable<Categories> {
-            val viewModel: CategoryViewModel = hiltViewModel()
-            CategoryScreen(
-                viewModel = viewModel
-            )
-        }
-        composable<Settings> {
-            SettingsScreen()
-        }
+        spendingNav(navController, dependencies)
+        incomeNav(navController, dependencies)
+        accountNav(navController, dependencies)
+        categoryNav(navController, dependencies)
+        settingsNav(navController)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    MainScreen()
+    //MainScreen()
 }

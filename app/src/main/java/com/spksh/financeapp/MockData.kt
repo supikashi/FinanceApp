@@ -1,9 +1,9 @@
 package com.spksh.financeapp
 
-import com.spksh.financeapp.ui.model.AccountUIModel
-import com.spksh.financeapp.ui.model.CategoryUIModel
-import com.spksh.financeapp.ui.model.CategoryWithSumUIModel
-import com.spksh.financeapp.ui.model.TransactionUiModel
+import com.spksh.ui.model.AccountUIModel
+import com.spksh.ui.model.CategoryUIModel
+import com.spksh.transactions.ui.model.TransactionResponseUiModel
+import com.spksh.transactions.ui.model.CategoryWithSumUIModel
 
 /**
  * Объект с моковыми данными
@@ -208,7 +208,7 @@ object MockData {
     val historyEndDate = "21.07.2077"
     val historySum = "123 456 ₽"
     val transactions = listOf(
-        TransactionUiModel(
+        TransactionResponseUiModel(
             category = CategoryUIModel(
                 name = "Ремонт квартиры",
                 emoji = "РК"
@@ -217,7 +217,7 @@ object MockData {
             transactionDate = "22:22",
             comment = "Фурнитура для дверей"
         ),
-        TransactionUiModel(
+        TransactionResponseUiModel(
             category = CategoryUIModel(
                 name = "На собачку",
                 emoji = "🐶"
@@ -225,7 +225,7 @@ object MockData {
             amount = "100 000 ₽",
             transactionDate = "22:22"
         ),
-        TransactionUiModel(
+        TransactionResponseUiModel(
             category = CategoryUIModel(
                 name = "На собачку",
                 emoji = "🐶"
@@ -233,7 +233,7 @@ object MockData {
             amount = "100 000 ₽",
             transactionDate = "22:22"
         ),
-        TransactionUiModel(
+        TransactionResponseUiModel(
             category = CategoryUIModel(
                 name = "На собачку",
                 emoji = "🐶"

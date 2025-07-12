@@ -1,3 +1,5 @@
+includeBuild("build_logic")
+
 pluginManagement {
     repositories {
         google {
@@ -12,7 +14,7 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         google()
         mavenCentral()
@@ -21,4 +23,22 @@ dependencyResolutionManagement {
 
 rootProject.name = "FinanceApp"
 include(":app")
- 
+
+listOf(
+    "model",
+    "domain",
+    "data",
+    "ui",
+    "di"
+).forEach {
+    include(":core:$it")
+}
+
+listOf(
+    "transactions",
+    "account",
+    "category",
+    "settings"
+).forEach {
+    include(":features:$it")
+}
