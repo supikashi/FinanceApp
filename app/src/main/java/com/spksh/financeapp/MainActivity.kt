@@ -6,19 +6,25 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.remember
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+//import com.spksh.di.ViewModelFactory
 import com.spksh.financeapp.ui.screen.MainScreen
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installCustomSplash()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MainScreen()
+            MainScreen(
+                viewModelFactory = remember {
+                    appComponent.viewModelProviderFactory()
+                },
+                appComponent = appComponent
+            )
         }
     }
 
