@@ -13,7 +13,7 @@ class UpdateTransactionUseCase @Inject constructor(
     suspend operator fun invoke(
         id: Long,
         transactionRequest: TransactionRequest
-    ): TransactionResponse = withContext(Dispatchers.IO) {
+    ) = withContext(Dispatchers.IO) {
         repository.updateTransaction(id, transactionRequest)
     }
 }

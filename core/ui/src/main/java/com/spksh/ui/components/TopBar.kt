@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,14 +31,15 @@ fun TopBar(
     leftIconOnClick: () -> Unit = {},
     rightIconOnClick: () -> Unit = {},
     leftIconContentDescription: String? = null,
-    rightIconContentDescription: String? = null
+    rightIconContentDescription: String? = null,
+    containerColor: Color = MaterialTheme.colorScheme.primary
 ) {
     val size = 48
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(64.dp)
-            .background(MaterialTheme.colorScheme.primary)
+            .background(containerColor)
             .padding(horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

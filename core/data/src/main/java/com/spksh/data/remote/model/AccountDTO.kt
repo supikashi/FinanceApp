@@ -1,5 +1,6 @@
 package com.spksh.data.remote.model
 
+import com.spksh.data.local.model.AccountEntity
 import com.spksh.domain.model.Account
 import kotlinx.serialization.Serializable
 
@@ -17,7 +18,17 @@ data class AccountDTO(
     val updatedAt: String = "",
 ) {
     fun toAccount() = Account(
-        id = id,
+        remoteId = id,
+        userId = userId,
+        name = name,
+        balance = balance.toDoubleOrNull() ?: 0.0,
+        currency = currency,
+        createdAt = createdAt,
+        updatedAt = updatedAt
+    )
+
+    fun toEntity() = AccountEntity(
+        remoteId = id,
         userId = userId,
         name = name,
         balance = balance.toDoubleOrNull() ?: 0.0,

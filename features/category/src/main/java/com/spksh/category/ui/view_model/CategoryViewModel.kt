@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spksh.category.ui.state.CategoryScreenState
 import com.spksh.category.domain.use_case.FilterCategoriesByNameUseCase
-import com.spksh.domain.useCase.GetCategoriesByTypeUseCase
+import com.spksh.domain.useCase.GetCategoriesByTypeFlowUseCase
+import com.spksh.domain.useCase.LoadCategoriesFromNetworkUseCase
 import com.spksh.ui.model.toUiModel
 import com.spksh.ui.state.UiState
 import com.spksh.ui.utils.multipleFetch
@@ -20,8 +21,9 @@ import kotlinx.coroutines.launch
  */
 
 class CategoryViewModel @Inject constructor(
-    private val getCategoriesByTypeUseCase: GetCategoriesByTypeUseCase,
-    private val filterCategoriesByNameUseCase: FilterCategoriesByNameUseCase
+    private val getCategoriesByTypeFlowUseCase: GetCategoriesByTypeFlowUseCase,
+    private val filterCategoriesByNameUseCase: FilterCategoriesByNameUseCase,
+    private val loadCategoriesFromNetworkUseCase: LoadCategoriesFromNetworkUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<UiState<CategoryScreenState>>(UiState.Loading)
     val uiState: StateFlow<UiState<CategoryScreenState>> = _uiState
@@ -30,15 +32,13 @@ class CategoryViewModel @Inject constructor(
 
     init {
         Log.i("my_tag", "category viewmodel init")
-        fetchData()
-    }
-
-    fun fetchData() = viewModelScope.launch {
-        _uiState.value = UiState.Loading
-        try {
-            multipleFetch(
-                fetch = {
-                    val categories = getCategoriesByTypeUseCase(false).map { it.toUiModel() }
+        viewModelScope.launch {
+            getCategoriesByTypeFlowUseCase(false).collect {
+                Log.i("my_tag", "category collected")
+                if (it.isEmpty()) {
+                    fetchData()
+                } else {
+                    val categories = it.map { it.toUiModel() }
                     _uiState.value = UiState.Success(
                         data = CategoryScreenState(
                             categories = categories,
@@ -46,9 +46,15 @@ class CategoryViewModel @Inject constructor(
                         )
                     )
                 }
-            )
-        } catch (e: Throwable) {
-            _uiState.value = UiState.Error(e.message ?: "Unknown error")
+            }
+        }
+    }
+
+    fun fetchData() = viewModelScope.launch {
+        _uiState.value = UiState.Loading
+        val response = loadCategoriesFromNetworkUseCase()
+        if (response == null) {
+            _uiState.value = UiState.Error("")
         }
     }
 

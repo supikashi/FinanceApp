@@ -22,9 +22,8 @@ import androidx.navigation.NavController
 import com.spksh.financeapp.ui.R
 import com.spksh.transactions.ui.navigation.IncomeHistory
 import com.spksh.transactions.ui.navigation.IncomeTransaction
-import com.spksh.transactions.ui.view_model.IncomeViewModel
+import com.spksh.transactions.ui.view_model.transaction.IncomeViewModel
 import com.spksh.transactions.ui.state.TodayTransactionsScreenState
-import com.spksh.transactions.ui.view_model.IncomeHistoryViewModel
 
 import com.spksh.ui.state.UiState
 import com.spksh.ui.components.AddButton
@@ -38,9 +37,6 @@ fun IncomeScreen(
     navController: NavController,
 ) {
     val state = viewModel.uiState.collectAsStateWithLifecycle().value
-    LaunchedEffect(Unit) {
-        viewModel.retryLoad()
-    }
     IncomeScreenImpl(
         state = state,
         onHistoryIconClick = {

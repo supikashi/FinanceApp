@@ -14,6 +14,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +37,9 @@ fun AccountScreen(
     navController: NavController
 ) {
     val state = viewModel.uiState.collectAsStateWithLifecycle().value
+    LaunchedEffect(Unit) {
+        viewModel.syncAccount()
+    }
     AccountScreenImpl(
         state = state,
         onAccountClick = {
@@ -44,7 +48,7 @@ fun AccountScreen(
                 restoreState = true
             }
         },
-        onRetryClick = {viewModel.retryLoad()}
+        onRetryClick = {viewModel.fetchAccount()}
     )
 }
 

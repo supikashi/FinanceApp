@@ -1,8 +1,8 @@
 package com.spksh.category.di
 
 import com.spksh.domain.repository.CategoryRepository
-import com.spksh.category.domain.use_case.FilterCategoriesByNameUseCase
-import com.spksh.domain.useCase.GetCategoriesByTypeUseCase
+import com.spksh.domain.useCase.GetCategoriesByTypeFlowUseCase
+import com.spksh.domain.useCase.LoadCategoriesFromNetworkUseCase
 import dagger.Module
 import dagger.Provides
 
@@ -10,6 +10,11 @@ import dagger.Provides
 object CategoryUseCaseModule {
     @CategoryScope
     @Provides
-    fun provideGetCategoriesByTypeUseCase(repository: CategoryRepository): GetCategoriesByTypeUseCase =
-        GetCategoriesByTypeUseCase(repository)
+    fun provideGetCategoriesByTypeUseCase(repository: CategoryRepository): GetCategoriesByTypeFlowUseCase =
+        GetCategoriesByTypeFlowUseCase(repository)
+
+    @CategoryScope
+    @Provides
+    fun provideLoadCategoriesFromNetworkUseCase(repository: CategoryRepository): LoadCategoriesFromNetworkUseCase =
+        LoadCategoriesFromNetworkUseCase(repository)
 }

@@ -1,14 +1,11 @@
 package com.spksh.category.di
 
 import androidx.lifecycle.ViewModelProvider
-import com.spksh.data.DataModule
-import com.spksh.data.NetworkModule
 import com.spksh.di.CoreModule
 import com.spksh.di.FactoryModule
 import com.spksh.domain.repository.CategoryRepository
 import dagger.Component
 import jakarta.inject.Scope
-import javax.inject.Singleton
 
 @CategoryScope
 @Component(
@@ -21,7 +18,6 @@ import javax.inject.Singleton
     dependencies = [CategoryDependencies::class]
 )
 interface CategoryComponent {
-
     fun viewModelFactory(): ViewModelProvider.Factory
 
     @Component.Factory

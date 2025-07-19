@@ -27,7 +27,7 @@ fun TransactionResponse.toUiModel(zoneId: ZoneId? = null) : TransactionResponseU
         null
     }
     return TransactionResponseUiModel(
-        id = id,
+        id = localId,
         category = category.toUiModel(),
         amount = formatSum(amount, account.currency),
         transactionDate = formatter?.format(transactionDate) ?: "",

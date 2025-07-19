@@ -2,6 +2,7 @@ package com.spksh.category.ui.navigation
 
 import android.util.Log
 import androidx.compose.runtime.remember
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -11,6 +12,7 @@ import com.spksh.category.di.CategoryDependencies
 import com.spksh.category.di.DaggerCategoryComponent
 import com.spksh.category.ui.screen.CategoryScreen
 import com.spksh.category.ui.view_model.CategoryViewModel
+import com.spksh.domain.model.Category
 
 fun NavGraphBuilder.categoryNav(
     navController: NavHostController,
@@ -19,13 +21,20 @@ fun NavGraphBuilder.categoryNav(
     val component = DaggerCategoryComponent.factory()
         .create(dependencies)
     val factory = component.viewModelFactory()
-    navigation< CategoriesGraph>(startDestination = Categories) {
+    navigation<CategoriesGraph>(Categories) {
         composable<Categories> {
-            val viewModel: CategoryViewModel = viewModel(factory = factory)
+            val viewModel: CategoryViewModel = viewModel(
+                factory = factory
+            )
+            remember {
+                Log.i("my_tag", viewModel.toString())
+                //Log.i("my_tag", component.toString())
+                Log.i("my_tag", factory.toString())
+            }
             CategoryScreen(
                 viewModel = viewModel,
             )
         }
-
     }
+
 }

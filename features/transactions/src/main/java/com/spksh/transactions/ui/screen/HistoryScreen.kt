@@ -17,25 +17,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.spksh.financeapp.ui.R
 import com.spksh.transactions.ui.state.HistoryScreenState
-import com.spksh.transactions.ui.view_model.HistoryViewModel
+import com.spksh.transactions.ui.view_model.history.HistoryViewModel
 import com.spksh.ui.state.UiState
 import com.spksh.ui.components.DatePickerWrap
 import com.spksh.ui.components.ListItem
 import com.spksh.ui.components.ScreenStateHandler
 import com.spksh.ui.components.TopBar
-import java.time.LocalDate
 
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.graphics.Color
+import com.spksh.transactions.ui.navigation.IncomeAnalysis
 import com.spksh.transactions.ui.navigation.IncomeTransaction
+import com.spksh.transactions.ui.navigation.SpendingAnalysis
 import com.spksh.transactions.ui.navigation.SpendingTransaction
-import com.spksh.transactions.ui.view_model.IncomeHistoryViewModel
+import com.spksh.transactions.ui.view_model.history.IncomeHistoryViewModel
 
 @Composable
 fun HistoryScreen(
@@ -43,9 +47,6 @@ fun HistoryScreen(
     navController: NavController,
 ) {
     val state = viewModel.uiState.collectAsStateWithLifecycle().value
-    LaunchedEffect(Unit) {
-        viewModel.retryLoad()
-    }
     HistoryScreenImpl(
         state = state,
         onBackClick = { navController.popBackStack() },
@@ -62,6 +63,17 @@ fun HistoryScreen(
                 launchSingleTop = true
                 restoreState = true
             }
+        },
+        onAnalysisClick = {
+            navController.navigate(
+                if (viewModel is IncomeHistoryViewModel)
+                    IncomeAnalysis
+                else
+                    SpendingAnalysis
+            ) {
+                launchSingleTop = true
+                restoreState = true
+            }
         }
     )
 }
@@ -73,7 +85,8 @@ private fun HistoryScreenImpl(
     onEndDateSelected: (Long?) -> Unit = {},
     onTransactionClick: (Long) -> Unit = {},
     onBackClick: () -> Unit = {},
-    onRetryClick: () -> Unit = {}
+    onRetryClick: () -> Unit = {},
+    onAnalysisClick: () -> Unit = {}
 ) {
     Box {
         Column(
@@ -82,7 +95,7 @@ private fun HistoryScreenImpl(
             TopBar(
                 headline = "Моя история",
                 rightIcon = R.drawable.history,
-                rightIconOnClick = {},
+                rightIconOnClick = onAnalysisClick,
                 rightIconContentDescription = null,
                 leftIcon = R.drawable.arrow_back,
                 leftIconOnClick = onBackClick,
@@ -200,14 +213,14 @@ fun DatePickListItem(
     leadingText: String = "",
     dateText: String = "",
     onDateSelected: (Long?) -> Unit = {},
+    backgroundColor: Color = MaterialTheme.colorScheme.secondary,
+    buttonColor: Color = MaterialTheme.colorScheme.secondary
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
     ListItem(
         showTrailIcon = false,
         minHeight = 56.dp,
-        containerColor = MaterialTheme.colorScheme.secondary,
-        isClickable = true,
-        onClick = {showDatePicker = true}
+        containerColor = backgroundColor
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -218,10 +231,18 @@ fun DatePickListItem(
                 text = leadingText,
                 style = MaterialTheme.typography.bodyLarge
             )
-            Text(
-                text = dateText,
-                style = MaterialTheme.typography.bodyLarge
-            )
+            Button(
+                onClick = {
+                    showDatePicker = true
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = buttonColor)
+            ) {
+                Text(
+                    text = dateText,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
         }
     }
     if (showDatePicker) {

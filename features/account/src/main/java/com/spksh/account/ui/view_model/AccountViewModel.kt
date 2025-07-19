@@ -1,7 +1,10 @@
 package com.spksh.account.ui.view_model
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spksh.account.domain.use_case.SyncAccountUseCase
+import com.spksh.account.domain.use_case.UpdateAccountUseCase
 import com.spksh.ui.model.toUiModel
 import com.spksh.account.ui.state.AccountScreenState
 import com.spksh.domain.useCase.GetAccountsFlowUseCase
@@ -20,7 +23,8 @@ import kotlinx.coroutines.launch
 
 class AccountViewModel @Inject constructor(
     getAccountsFlowUseCase: GetAccountsFlowUseCase,
-    private val loadAccountsUseCase: LoadAccountsUseCase
+    private val loadAccountsUseCase: LoadAccountsUseCase,
+    private val syncAccountUseCase: SyncAccountUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<UiState<AccountScreenState>>(UiState.Loading)
     private val accountsFlow = getAccountsFlowUseCase()
@@ -28,33 +32,34 @@ class AccountViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            accountsFlow.collect {
-                fetchAccount(it)
+            accountsFlow.collect { accounts ->
+                Log.i("my_tag", "account collected")
+                if (accounts.isEmpty()) {
+                    fetchAccount()
+                } else {
+                    _uiState.value = UiState.Success(
+                        AccountScreenState(
+                            accounts.map { it.toUiModel() }
+                        )
+                    )
+                }
             }
         }
     }
 
-    fun retryLoad() {
-        viewModelScope.launch {
-            loadAccountsUseCase()
+    fun fetchAccount() = viewModelScope.launch {
+        _uiState.value = UiState.Loading
+        val response = loadAccountsUseCase()
+        if (response == null) {
+            _uiState.value = UiState.Error("")
         }
     }
 
-    fun fetchAccount(accountsList: List<Account>) = viewModelScope.launch {
-        _uiState.value = UiState.Loading
+    fun syncAccount() = viewModelScope.launch {
         try {
-            multipleFetch(
-                fetch = {
-                    val account = accountsList.map { it.toUiModel() }
-                    if (account.isEmpty()) {
-                        _uiState.value =  UiState.Error("")
-                    } else {
-                        _uiState.value = UiState.Success(AccountScreenState(account))
-                    }
-                }
-            )
-        } catch (e: Throwable) {
-            _uiState.value = UiState.Error(e.message ?: "Unknown error")
+            syncAccountUseCase()
+        } catch (e: Exception) {
+            Log.i("my_tag", e.message ?: "sync error")
         }
     }
 }

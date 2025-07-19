@@ -3,6 +3,7 @@ package com.spksh.domain.repository
 import com.spksh.domain.model.Transaction
 import com.spksh.domain.model.TransactionRequest
 import com.spksh.domain.model.TransactionResponse
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Интерфейс репозитория для получения данных о транзакциях
@@ -10,24 +11,26 @@ import com.spksh.domain.model.TransactionResponse
 interface TransactionRepository {
     suspend fun getTransaction(
         id: Long
-    ) : TransactionResponse
+    ) : Transaction?
 
-    suspend fun getTransactionsByPeriod(
+    fun getTransactionsByPeriodFlow(
         accountId: Long,
-        startDate: String?,
-        endDate: String?
-    ) : List<TransactionResponse>
+        startDate: Long,
+        endDate: Long
+    ) : Flow<List<TransactionResponse>>
 
     suspend fun createTransaction(
         transactionRequest: TransactionRequest
-    ) : Transaction
+    ) : Long
 
     suspend fun updateTransaction(
         id: Long,
         transactionRequest: TransactionRequest
-    ) : TransactionResponse
+    )
 
     suspend fun deleteTransaction(
         id: Long
     )
+    suspend fun synchronizeDatabase()
+    suspend fun synchronizeUpdated()
 }

@@ -1,5 +1,6 @@
 package com.spksh.data.remote.model
 
+import com.spksh.data.local.model.TransactionEntity
 import com.spksh.domain.model.Transaction
 import kotlinx.serialization.Serializable
 import java.time.Instant
@@ -16,11 +17,23 @@ data class TransactionDTO(
     val updatedAt: String = ""
 ) {
     fun toTransaction() = Transaction(
-        id = id,
+        remoteId = id,
         accountId = accountId,
         categoryId = categoryId,
         amount = amount.toDoubleOrNull() ?: 0.0,
         transactionDate = Instant.parse(transactionDate),
+        comment = comment,
+        createdAt = createdAt,
+        updatedAt = updatedAt
+    )
+
+    fun toEntity(localId: Long = 0) = TransactionEntity(
+        localId = localId,
+        remoteId = id,
+        accountId = accountId,
+        categoryId = categoryId,
+        amount = amount.toDoubleOrNull() ?: 0.0,
+        transactionDate = Instant.parse(transactionDate).toEpochMilli(),
         comment = comment,
         createdAt = createdAt,
         updatedAt = updatedAt

@@ -42,7 +42,7 @@ import com.spksh.transactions.ui.component.DatePickListItem
 import com.spksh.transactions.ui.component.TimePickListItem
 import com.spksh.transactions.ui.model.TransactionRequestUiModel
 import com.spksh.transactions.ui.state.TransactionScreenState
-import com.spksh.transactions.ui.view_model.TransactionViewModel
+import com.spksh.transactions.ui.view_model.transaction.TransactionViewModel
 import com.spksh.ui.components.DatePickerWrap
 import com.spksh.ui.components.ListItem
 import com.spksh.ui.components.ScreenStateHandler
@@ -74,15 +74,17 @@ fun TransactionScreen(
         onSetDate = {viewModel.changeDate(it)},
         onSetTime = {viewModel.changeTime(it)},
         onSaveClick = {
-            showLoader = true
-            viewModel.updateTransaction(
-                it,
-                { navController.popBackStack() },
-                {
-                    showLoader = false
-                    Toast.makeText(context, "Ошибка сохранения", Toast.LENGTH_SHORT).show()
-                }
-            )
+            if (!showLoader) {
+                showLoader = true
+                viewModel.updateTransaction(
+                    it,
+                    { navController.popBackStack() },
+                    {
+                        showLoader = false
+                        Toast.makeText(context, "Ошибка сохранения", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
         },
         onDelete = {
             showLoader = true

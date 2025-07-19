@@ -2,11 +2,13 @@ package com.spksh.transactions.di
 
 import androidx.lifecycle.ViewModel
 import com.spksh.di.ViewModelKey
-import com.spksh.transactions.ui.view_model.IncomeHistoryViewModel
-import com.spksh.transactions.ui.view_model.IncomeViewModel
-import com.spksh.transactions.ui.view_model.SpendingHistoryViewModel
-import com.spksh.transactions.ui.view_model.SpendingViewModel
-import com.spksh.transactions.ui.view_model.TransactionViewModel
+import com.spksh.transactions.ui.view_model.analysis.IncomeAnalysisViewModel
+import com.spksh.transactions.ui.view_model.analysis.SpendingAnalysisViewModel
+import com.spksh.transactions.ui.view_model.history.IncomeHistoryViewModel
+import com.spksh.transactions.ui.view_model.transaction.IncomeViewModel
+import com.spksh.transactions.ui.view_model.history.SpendingHistoryViewModel
+import com.spksh.transactions.ui.view_model.transaction.SpendingViewModel
+import com.spksh.transactions.ui.view_model.transaction.TransactionViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -37,4 +39,14 @@ interface TransactionsViewModelModule {
     @IntoMap
     @ViewModelKey(TransactionViewModel::class)
     fun bindTransactionViewModel(transactionViewModel: TransactionViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(IncomeAnalysisViewModel::class)
+    fun bindIncomeAnalysisViewModel(incomeAnalysisViewModel: IncomeAnalysisViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SpendingAnalysisViewModel::class)
+    fun bindSpendingAnalysisViewModel(spendingAnalysisViewModel: SpendingAnalysisViewModel): ViewModel
 }
