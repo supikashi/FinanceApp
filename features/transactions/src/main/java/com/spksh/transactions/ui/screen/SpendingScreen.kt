@@ -36,9 +36,6 @@ fun SpendingScreen(
     navController: NavController
 ) {
     val state = viewModel.uiState.collectAsStateWithLifecycle().value
-    LaunchedEffect(Unit) {
-        viewModel.retryLoad()
-    }
     SpendingScreenImpl(
         state = state,
         onHistoryIconClick = {

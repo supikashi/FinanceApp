@@ -13,7 +13,6 @@ class SynchronizeUpdatedUseCase(
     private val categoryRepository: CategoryRepository
 ) {
     suspend operator fun invoke() = withContext(Dispatchers.IO) {
-        delay(10000)
         val res = categoryRepository.loadFromNetwork()
         if (res != null) {
             accountRepository.synchronizeUpdated()

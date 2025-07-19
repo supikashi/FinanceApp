@@ -37,9 +37,6 @@ fun IncomeScreen(
     navController: NavController,
 ) {
     val state = viewModel.uiState.collectAsStateWithLifecycle().value
-    LaunchedEffect(Unit) {
-        viewModel.retryLoad()
-    }
     IncomeScreenImpl(
         state = state,
         onHistoryIconClick = {

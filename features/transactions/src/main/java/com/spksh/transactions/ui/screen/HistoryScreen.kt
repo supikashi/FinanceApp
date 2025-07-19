@@ -47,9 +47,6 @@ fun HistoryScreen(
     navController: NavController,
 ) {
     val state = viewModel.uiState.collectAsStateWithLifecycle().value
-    LaunchedEffect(Unit) {
-        viewModel.retryLoad()
-    }
     HistoryScreenImpl(
         state = state,
         onBackClick = { navController.popBackStack() },
