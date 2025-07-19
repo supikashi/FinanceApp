@@ -249,29 +249,4 @@ class TransactionRepositoryImpl @Inject constructor(
             }
         }
     }
-
-    override suspend fun loadFromNetwork(accountId: Long) : Boolean {
-//        try {
-//            Log.i("my_tag", "transactions load 1")
-//            val local = transactionDao.getAllItems()
-//            Log.i("my_tag", "transactions load 2")
-//            if (local.isEmpty()) {
-//                val remoteId = accountDao.getAllItems().first().remoteId ?: 0
-//                val response = api.getTransactions(
-//                    remoteId,
-//                    "0000-01-01",
-//                    "9999-12-31"
-//                )
-//                transactionDao.insertAll(response.map {it.toEntity()})
-//                Log.i("my_tag", "transactions load success")
-//            } else {
-//                Log.i("my_tag", "local transactions load success")
-//            }
-//            return true
-//        } catch (e: Exception) {
-//            Log.i("my_tag", "account transactions error")
-//            return false
-//        }
-        return false
-    }
 }

@@ -22,6 +22,7 @@ class SynchronizeDatabaseUseCase(
             accountRepository.synchronizeDatabase()
             transactionRepository.synchronizeUpdated()
             transactionRepository.synchronizeDatabase()
+            accountRepository.synchronizeDatabase()
             Log.i("my_tag", "work success")
             dataStoreRepository.saveSyncTime(Instant.now().toEpochMilli())
         }

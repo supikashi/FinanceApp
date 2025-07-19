@@ -10,6 +10,7 @@ class CreateTransactionUseCase @Inject constructor(
     private val repository: TransactionRepository
 ) {
     suspend operator fun invoke(transactionRequest: TransactionRequest): Long = withContext(Dispatchers.IO) {
-        repository.createTransaction(transactionRequest)
+        val id = repository.createTransaction(transactionRequest)
+        id
     }
 }

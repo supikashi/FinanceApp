@@ -74,15 +74,17 @@ fun TransactionScreen(
         onSetDate = {viewModel.changeDate(it)},
         onSetTime = {viewModel.changeTime(it)},
         onSaveClick = {
-            showLoader = true
-            viewModel.updateTransaction(
-                it,
-                { navController.popBackStack() },
-                {
-                    showLoader = false
-                    Toast.makeText(context, "Ошибка сохранения", Toast.LENGTH_SHORT).show()
-                }
-            )
+            if (!showLoader) {
+                showLoader = true
+                viewModel.updateTransaction(
+                    it,
+                    { navController.popBackStack() },
+                    {
+                        showLoader = false
+                        Toast.makeText(context, "Ошибка сохранения", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
         },
         onDelete = {
             showLoader = true

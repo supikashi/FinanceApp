@@ -15,8 +15,8 @@ object WorkScheduler {
             .build()
 
         val workRequest = PeriodicWorkRequestBuilder<SyncWorker>(
-            16,
-            TimeUnit.MINUTES
+            2,
+            TimeUnit.HOURS
         )
             .setConstraints(constraints)
             .build()

@@ -33,5 +33,4 @@ interface TransactionRepository {
     )
     suspend fun synchronizeDatabase()
     suspend fun synchronizeUpdated()
-    suspend fun loadFromNetwork(accountId: Long) : Boolean
 }

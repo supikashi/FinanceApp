@@ -9,7 +9,6 @@ import com.spksh.domain.model.Account
 import com.spksh.domain.useCase.GetTodayUseCase
 import com.spksh.domain.useCase.GetZoneIdUseCase
 import com.spksh.transactions.domain.use_case.GetTransactionsByPeriodFlowUseCase
-import com.spksh.transactions.domain.use_case.LoadTransactionsUseCase
 import com.spksh.transactions.ui.state.TodayTransactionsScreenState
 import com.spksh.ui.state.UiState
 import jakarta.inject.Inject
@@ -28,7 +27,6 @@ class SpendingViewModel @Inject constructor(
     private val getTodayUseCase: GetTodayUseCase,
     private val getTransactionsByPeriodFlowUseCase: GetTransactionsByPeriodFlowUseCase,
     private val zoneIdUseCase: GetZoneIdUseCase,
-    private val loadTransactionsUseCase: LoadTransactionsUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<UiState<TodayTransactionsScreenState>>(UiState.Loading)
     private val accountsFlow = getAccountsFlowUseCase()
