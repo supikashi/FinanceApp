@@ -1,5 +1,6 @@
 package com.spksh.data.remote.model
 
+import com.spksh.data.local.model.CategoryEntity
 import com.spksh.domain.model.Category
 import kotlinx.serialization.Serializable
 
@@ -14,6 +15,13 @@ data class CategoryDTO(
     val isIncome: Boolean = false
 ) {
     fun toCategory() = Category(
+        id = id,
+        name = name,
+        emoji = emoji,
+        isIncome = isIncome
+    )
+
+    fun toEntity() = CategoryEntity(
         id = id,
         name = name,
         emoji = emoji,

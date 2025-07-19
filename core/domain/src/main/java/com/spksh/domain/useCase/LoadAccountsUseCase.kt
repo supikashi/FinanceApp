@@ -11,6 +11,6 @@ class LoadAccountsUseCase(
     private val repository: AccountRepository
 ) {
     suspend operator fun invoke() = withContext(Dispatchers.IO)  {
-        repository.loadAccounts()
+        repository.loadFromNetwork()
     }
 }

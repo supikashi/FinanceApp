@@ -1,6 +1,7 @@
 package com.spksh.financeapp.di
 
 import androidx.lifecycle.ViewModel
+import com.spksh.financeapp.ui.viewModel.CategoriesGraphViewModel
 import com.spksh.di.ViewModelKey
 import com.spksh.financeapp.ui.viewModel.NetworkViewModel
 
@@ -16,4 +17,9 @@ interface ViewModelModule {
   @IntoMap
   @ViewModelKey(NetworkViewModel::class)
   fun bindNetworkViewModel(networkViewModel: NetworkViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(CategoriesGraphViewModel::class)
+  fun bindCategoriesGraphViewModel(categoryGraphViewModel: CategoriesGraphViewModel): ViewModel
 }

@@ -4,7 +4,8 @@ package com.spksh.domain.model
  * Доменная модель счета
  */
 data class Account(
-    val id: Long = 0,
+    val localId: Long = 0,
+    val remoteId: Long? = null,
     val userId: Long = 0,
     val name: String = "",
     val balance: Double = 0.0,

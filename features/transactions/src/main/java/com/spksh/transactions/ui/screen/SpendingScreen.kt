@@ -22,9 +22,8 @@ import androidx.navigation.NavController
 import com.spksh.financeapp.ui.R
 import com.spksh.transactions.ui.navigation.SpendingHistory
 import com.spksh.transactions.ui.navigation.SpendingTransaction
-import com.spksh.transactions.ui.view_model.SpendingViewModel
+import com.spksh.transactions.ui.view_model.transaction.SpendingViewModel
 import com.spksh.transactions.ui.state.TodayTransactionsScreenState
-import com.spksh.transactions.ui.view_model.IncomeHistoryViewModel
 import com.spksh.ui.state.UiState
 import com.spksh.ui.components.AddButton
 import com.spksh.ui.components.ListItem

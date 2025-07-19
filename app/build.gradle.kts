@@ -61,5 +61,6 @@ dependencies {
     implementation(project(":features:category"))
     implementation(project(":features:settings"))
     implementation(libs.dagger)
+    implementation(libs.androidx.work.runtime.ktx)
     ksp(libs.dagger.compiler)
 }

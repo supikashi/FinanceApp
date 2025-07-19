@@ -25,3 +25,9 @@ data class IncomeTransaction(val id: Long?)
 
 @Serializable
 data class SpendingTransaction(val id: Long?)
+
+@Serializable
+object SpendingAnalysis
+
+@Serializable
+object IncomeAnalysis

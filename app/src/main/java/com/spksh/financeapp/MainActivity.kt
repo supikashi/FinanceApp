@@ -1,6 +1,7 @@
 package com.spksh.financeapp
 
 import android.animation.ObjectAnimator
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
@@ -9,15 +10,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.remember
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-//import com.spksh.di.ViewModelFactory
+import com.spksh.financeapp.background.WorkScheduler
 import com.spksh.financeapp.ui.screen.MainScreen
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installCustomSplash()
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
+        WorkScheduler.scheduleDataFetch(applicationContext)
         setContent {
             MainScreen(
                 viewModelFactory = remember {

@@ -1,8 +1,7 @@
 package com.spksh.transactions.di
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
-import com.spksh.data.DataModule
-import com.spksh.data.NetworkModule
 import com.spksh.di.CoreModule
 import com.spksh.di.FactoryModule
 import com.spksh.domain.repository.AccountRepository
@@ -10,7 +9,6 @@ import com.spksh.domain.repository.CategoryRepository
 import com.spksh.domain.repository.TransactionRepository
 import dagger.Component
 import jakarta.inject.Scope
-import javax.inject.Singleton
 
 
 @TransactionsScope

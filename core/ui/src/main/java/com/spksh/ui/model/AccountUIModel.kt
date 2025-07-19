@@ -16,7 +16,7 @@ data class AccountUIModel(
 )
 
 fun Account.toUiModel() = AccountUIModel(
-    id = id,
+    id = localId,
     name = name,
     balance = formatSum(balance, currency),
     currency = formatCurrency(currency)

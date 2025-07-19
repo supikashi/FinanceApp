@@ -1,12 +1,7 @@
 package com.spksh.transactions.ui.navigation
 
 import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -14,14 +9,14 @@ import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.spksh.transactions.di.DaggerTransactionsComponent
 import com.spksh.transactions.di.TransactionsDependencies
+import com.spksh.transactions.ui.screen.AnalysisScreen
 import com.spksh.transactions.ui.screen.HistoryScreen
 import com.spksh.transactions.ui.screen.IncomeScreen
-import com.spksh.transactions.ui.screen.SpendingScreen
 import com.spksh.transactions.ui.screen.TransactionScreen
-import com.spksh.transactions.ui.view_model.IncomeHistoryViewModel
-import com.spksh.transactions.ui.view_model.IncomeViewModel
-import com.spksh.transactions.ui.view_model.SpendingViewModel
-import com.spksh.transactions.ui.view_model.TransactionViewModel
+import com.spksh.transactions.ui.view_model.analysis.IncomeAnalysisViewModel
+import com.spksh.transactions.ui.view_model.history.IncomeHistoryViewModel
+import com.spksh.transactions.ui.view_model.transaction.IncomeViewModel
+import com.spksh.transactions.ui.view_model.transaction.TransactionViewModel
 
 fun NavGraphBuilder.incomeNav(
     navController: NavHostController,
@@ -33,6 +28,7 @@ fun NavGraphBuilder.incomeNav(
     navigation<IncomeGraph>(startDestination = Income) {
         composable<Income> { backStackEntry ->
             val viewModel: IncomeViewModel = viewModel(factory = factory)
+            Log.i("my_tag", viewModel.toString())
             IncomeScreen(
                 viewModel = viewModel,
                 navController = navController
@@ -53,6 +49,13 @@ fun NavGraphBuilder.incomeNav(
                 navController = navController,
                 transactionId = transaction.id,
                 isIncome = true
+            )
+        }
+        composable<IncomeAnalysis> {
+            val viewModel: IncomeAnalysisViewModel = viewModel(factory = factory)
+            AnalysisScreen(
+                viewModel = viewModel,
+                navController = navController
             )
         }
     }

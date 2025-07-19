@@ -23,12 +23,10 @@ import javax.inject.Inject
  */
 
 class AccountUpdateViewModel @Inject constructor(
-    //savedStateHandle: SavedStateHandle,
     getAccountsFlowUseCase: GetAccountsFlowUseCase,
     private val updateAccountUseCase: UpdateAccountUseCase,
     private val loadAccountsUseCase: LoadAccountsUseCase
 ) : ViewModel() {
-    //val accountId: Long = savedStateHandle.get<Long>("id") ?: 0
     private val accountsFlow = getAccountsFlowUseCase()
     private val _uiState = MutableStateFlow<UiState<AccountUpdateScreenState>>(UiState.Loading)
     val uiState: StateFlow<UiState<AccountUpdateScreenState>> = _uiState
@@ -57,7 +55,7 @@ class AccountUpdateViewModel @Inject constructor(
                 multipleFetch(
                     fetch = {
                         val account = accountsList
-                            .find {it.id == accountsList.first().id}
+                            .find {it.remoteId == accountsList.first().remoteId}
                             ?: throw Exception("account was not found")
                         _uiState.value = UiState.Success(
                             AccountUpdateScreenState(
@@ -81,13 +79,15 @@ class AccountUpdateViewModel @Inject constructor(
         popBackStack: () -> Unit,
         onError: () -> Unit,
     ) {
-        val accountId = accountsFlow.value.first().id
         updateJob?.cancel()
         updateJob = viewModelScope.launch {
             try {
                 updateAccountUseCase(
-                    accountId = accountsFlow.value.first().id,
-                    updateData = accountUpdateUiModel.toAccountUpdateData()
+                    accountsFlow.value.first().copy(
+                        name = accountUpdateUiModel.name,
+                        balance = accountUpdateUiModel.balance.toDouble(),
+                        currency = accountUpdateUiModel.currency
+                    )
                 )
                 if (isActive) {
                     popBackStack()

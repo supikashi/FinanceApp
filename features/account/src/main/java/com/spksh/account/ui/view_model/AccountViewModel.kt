@@ -1,5 +1,6 @@
 package com.spksh.account.ui.view_model
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spksh.ui.model.toUiModel
@@ -28,33 +29,26 @@ class AccountViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            accountsFlow.collect {
-                fetchAccount(it)
+            accountsFlow.collect { accounts ->
+                Log.i("my_tag", "account collected")
+                if (accounts.isEmpty()) {
+                    fetchAccount()
+                } else {
+                    _uiState.value = UiState.Success(
+                        AccountScreenState(
+                            accounts.map { it.toUiModel() }
+                        )
+                    )
+                }
             }
         }
     }
 
-    fun retryLoad() {
-        viewModelScope.launch {
-            loadAccountsUseCase()
-        }
-    }
-
-    fun fetchAccount(accountsList: List<Account>) = viewModelScope.launch {
+    fun fetchAccount() = viewModelScope.launch {
         _uiState.value = UiState.Loading
-        try {
-            multipleFetch(
-                fetch = {
-                    val account = accountsList.map { it.toUiModel() }
-                    if (account.isEmpty()) {
-                        _uiState.value =  UiState.Error("")
-                    } else {
-                        _uiState.value = UiState.Success(AccountScreenState(account))
-                    }
-                }
-            )
-        } catch (e: Throwable) {
-            _uiState.value = UiState.Error(e.message ?: "Unknown error")
+        val response = loadAccountsUseCase()
+        if (response == null) {
+            _uiState.value = UiState.Error("")
         }
     }
 }

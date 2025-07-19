@@ -6,7 +6,8 @@ import java.time.Instant
  * Доменная модель транзакции
  */
 data class TransactionResponse(
-    val id: Long = 0,
+    val localId: Long = 0,
+    val remoteId: Long? = null,
     val account: Account = Account(),
     val category: Category = Category(),
     val amount: Double = 0.0,

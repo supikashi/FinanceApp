@@ -42,7 +42,7 @@ import com.spksh.transactions.ui.component.DatePickListItem
 import com.spksh.transactions.ui.component.TimePickListItem
 import com.spksh.transactions.ui.model.TransactionRequestUiModel
 import com.spksh.transactions.ui.state.TransactionScreenState
-import com.spksh.transactions.ui.view_model.TransactionViewModel
+import com.spksh.transactions.ui.view_model.transaction.TransactionViewModel
 import com.spksh.ui.components.DatePickerWrap
 import com.spksh.ui.components.ListItem
 import com.spksh.ui.components.ScreenStateHandler

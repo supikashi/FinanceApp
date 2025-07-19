@@ -44,7 +44,7 @@ fun AccountScreen(
                 restoreState = true
             }
         },
-        onRetryClick = {viewModel.retryLoad()}
+        onRetryClick = {viewModel.fetchAccount()}
     )
 }
 

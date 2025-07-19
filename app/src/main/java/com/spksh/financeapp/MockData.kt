@@ -3,7 +3,6 @@ package com.spksh.financeapp
 import com.spksh.ui.model.AccountUIModel
 import com.spksh.ui.model.CategoryUIModel
 import com.spksh.transactions.ui.model.TransactionResponseUiModel
-import com.spksh.transactions.ui.model.CategoryWithSumUIModel
 
 /**
  * Объект с моковыми данными
@@ -103,107 +102,7 @@ object MockData {
             emoji = "💊",
         ),
     )
-    val incomeSumText = "600 000 ₽"
-    val incomeCategoriesList: List<CategoryWithSumUIModel> = listOf(
-        CategoryWithSumUIModel(
-            id = 1,
-            name = "Зарплата",
-            sum = "500 000 ₽",
-        ),
-        CategoryWithSumUIModel(
-            id = 2,
-            name = "Подработка",
-            sum = "100 000 ₽",
-        )
-    )
-    val spendingSumText = "436 558 ₽"
-    val spendingCategoriesList: List<CategoryWithSumUIModel> = listOf(
-        CategoryWithSumUIModel(
-            id = 1,
-            name = "Аренда квартиры",
-            emoji = "🏠",
-            sum = "100 000 ₽",
-        ),
-        CategoryWithSumUIModel(
-            id = 2,
-            name = "Одежда",
-            emoji = "👗",
-            sum = "100 000 ₽",
-        ),
-        CategoryWithSumUIModel(
-            id = 3,
-            name = "На собачку",
-            emoji = "🐶",
-            sum = "100 000 ₽",
-            description = "Джек"
-        ),
-        CategoryWithSumUIModel(
-            id = 4,
-            name = "На собачку",
-            emoji = "🐶",
-            sum = "100 000 ₽",
-            description = "Энни"
-        ),CategoryWithSumUIModel(
-            id = 5,
-            name = "Ремонт квартиры",
-            emoji = "РК",
-            sum = "100 000 ₽",
-        ),
-        CategoryWithSumUIModel(
-            id = 6,
-            name = "Продукты",
-            emoji = "🍭",
-            sum = "100 000 ₽",
-        ),
-        CategoryWithSumUIModel(
-            id = 7,
-            name = "Спортзал",
-            emoji = "🏋",
-            sum = "100 000 ₽",
-        ),
-        CategoryWithSumUIModel(
-            id = 8,
-            name = "Медицина",
-            emoji = "💊",
-            sum = "100 000 ₽",
-        ),
-        CategoryWithSumUIModel(
-            id = 8,
-            name = "Медицина",
-            emoji = "💊",
-            sum = "100 000 ₽",
-        ),
-        CategoryWithSumUIModel(
-            id = 8,
-            name = "Медицина",
-            emoji = "💊",
-            sum = "100 000 ₽",
-        ),
-        CategoryWithSumUIModel(
-            id = 8,
-            name = "Медицина",
-            emoji = "💊",
-            sum = "100 000 ₽",
-        ),
-        CategoryWithSumUIModel(
-            id = 8,
-            name = "Медицина",
-            emoji = "💊",
-            sum = "100 000 ₽",
-        ),
-        CategoryWithSumUIModel(
-            id = 8,
-            name = "Медицина",
-            emoji = "💊",
-            sum = "100 000 ₽",
-        ),
-        CategoryWithSumUIModel(
-            id = 8,
-            name = "Медицина",
-            emoji = "💊",
-            sum = "100 000 ₽",
-        )
-    )
+
     val historyStartDate = "19.06.2025"
     val historyEndDate = "21.07.2077"
     val historySum = "123 456 ₽"
