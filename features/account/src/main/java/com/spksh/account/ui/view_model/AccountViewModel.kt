@@ -4,14 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.spksh.account.domain.use_case.SyncAccountUseCase
-import com.spksh.account.domain.use_case.UpdateAccountUseCase
-import com.spksh.ui.model.toUiModel
 import com.spksh.account.ui.state.AccountScreenState
 import com.spksh.domain.useCase.GetAccountsFlowUseCase
 import com.spksh.domain.useCase.LoadAccountsUseCase
-import com.spksh.domain.model.Account
+import com.spksh.ui.model.toUiModel
 import com.spksh.ui.state.UiState
-import com.spksh.ui.utils.multipleFetch
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

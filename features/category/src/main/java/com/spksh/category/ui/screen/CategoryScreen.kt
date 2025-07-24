@@ -129,11 +129,3 @@ private fun CategoryScreenSuccess(
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun CategoriesScreenPreview() {
-//    CategoryScreenImpl(
-//        state = UiState.Success(data = CategoryScreenState(MockData.categoriesList, emptyList()))
-//    )
-//}

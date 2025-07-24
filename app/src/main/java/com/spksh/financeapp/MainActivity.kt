@@ -1,7 +1,6 @@
 package com.spksh.financeapp
 
 import android.animation.ObjectAnimator
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity

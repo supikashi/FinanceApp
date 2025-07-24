@@ -3,7 +3,6 @@ package com.spksh.data.local.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.spksh.domain.model.Account
-import kotlin.text.toDoubleOrNull
 
 @Entity(tableName = "account_table")
 data class AccountEntity(

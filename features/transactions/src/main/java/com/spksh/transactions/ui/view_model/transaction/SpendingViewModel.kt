@@ -54,22 +54,11 @@ class SpendingViewModel @Inject constructor(
         }
     }
 
-    private fun fetchTransactions(accountId: Long) = viewModelScope.launch {
-//        _uiState.value = UiState.Loading
-//        val response = loadTransactionsUseCase(accountId)
-//        if (!response) {
-//            _uiState.value = UiState.Error("")
-//        }
-    }
 
     fun retryLoad() {
         viewModelScope.launch {
             if (accountsFlow.value.isEmpty()) {
                 loadAccountsUseCase()
-            } else {
-                accountsFlow.value.firstOrNull()?.let {
-                    fetchTransactions(it.localId)
-                }
             }
         }
     }

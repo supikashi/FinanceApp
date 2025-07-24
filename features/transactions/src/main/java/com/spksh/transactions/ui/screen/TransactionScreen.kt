@@ -324,12 +324,3 @@ private fun CustomTextField(
         )
     )
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun TransactionScreenPreview() {
-////    TransactionScreenImpl(
-////        state = UiState.Success(TransactionScreenState(data = "aboba"))
-////    )
-//    Text("df")
-//}

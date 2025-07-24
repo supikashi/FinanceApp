@@ -2,14 +2,12 @@ package com.spksh.data.repository
 
 import android.util.Log
 import com.spksh.data.local.dao.CategoryDao
-import com.spksh.domain.repository.CategoryRepository
 import com.spksh.data.remote.api.CategoryApiService
-import com.spksh.data.remote.model.CategoryDTO
 import com.spksh.domain.model.Category
+import com.spksh.domain.repository.CategoryRepository
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import retrofit2.Response
 
 /**
  * Реализация [CategoryRepository], получающая данные о категориях из API
@@ -43,12 +41,4 @@ class CategoryRepositoryImpl @Inject constructor(
             return null
         }
     }
-
-//    override suspend fun getCategories(): List<Category> {
-//        return api.getCategories().map {it.toCategory()}
-//    }
-//
-//    override suspend fun getCategoriesByType(isIncome: Boolean): List<Category> {
-//        return api.getCategoriesByType(isIncome).map { it.toCategory() }
-//    }
 }

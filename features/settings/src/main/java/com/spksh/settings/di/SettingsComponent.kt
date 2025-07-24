@@ -1,7 +1,6 @@
 package com.spksh.settings.di
 
 import androidx.lifecycle.ViewModelProvider
-import com.spksh.data.local.data_store.DataStoreRepositoryImpl
 import com.spksh.di.CoreModule
 import com.spksh.di.FactoryModule
 import com.spksh.domain.repository.AccountRepository

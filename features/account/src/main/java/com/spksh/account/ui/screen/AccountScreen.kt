@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -146,13 +145,5 @@ private fun AccountScreenSuccess(
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun AccountScreenPreview() {
-//    AccountScreenImpl(
-//        state = UiState.Success(data = AccountScreenState(accounts = MockData.accountsList))
-//    )
-//}
 
 

@@ -116,9 +116,3 @@ fun SettingsScreen(
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun SettingsScreenPreview() {
-//    SettingsScreen()
-//}

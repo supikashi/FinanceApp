@@ -2,7 +2,6 @@ package com.spksh.data.remote.api
 
 
 import com.spksh.data.remote.model.CategoryDTO
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 

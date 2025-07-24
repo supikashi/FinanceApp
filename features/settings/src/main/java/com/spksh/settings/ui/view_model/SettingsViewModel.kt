@@ -3,7 +3,6 @@ package com.spksh.settings.ui.view_model
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.spksh.data.local.data_store.DataStoreRepositoryImpl
 import com.spksh.domain.repository.DataStoreRepository
 import com.spksh.domain.useCase.GetZoneIdUseCase
 import com.spksh.domain.useCase.SynchronizeDatabaseUseCase
