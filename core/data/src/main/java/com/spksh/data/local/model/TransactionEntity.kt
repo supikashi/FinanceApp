@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.spksh.data.remote.model.TransactionRequestDTO
 import com.spksh.domain.model.Transaction
-import com.spksh.domain.model.TransactionRequest
 import java.time.Instant
 
 @Entity(tableName = "transaction_table")

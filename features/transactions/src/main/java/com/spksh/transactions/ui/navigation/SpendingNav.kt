@@ -12,7 +12,6 @@ import com.spksh.transactions.ui.screen.AnalysisScreen
 import com.spksh.transactions.ui.screen.HistoryScreen
 import com.spksh.transactions.ui.screen.SpendingScreen
 import com.spksh.transactions.ui.screen.TransactionScreen
-import com.spksh.transactions.ui.view_model.analysis.IncomeAnalysisViewModel
 import com.spksh.transactions.ui.view_model.analysis.SpendingAnalysisViewModel
 import com.spksh.transactions.ui.view_model.history.SpendingHistoryViewModel
 import com.spksh.transactions.ui.view_model.transaction.SpendingViewModel

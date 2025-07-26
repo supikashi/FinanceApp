@@ -97,7 +97,6 @@ class TransactionViewModel @Inject constructor(
         viewModelScope.launch {
             loadAccountsUseCase()
             loadCategoriesFromNetworkUseCase()
-            //fetchData(accountsFlow.value)
         }
     }
 

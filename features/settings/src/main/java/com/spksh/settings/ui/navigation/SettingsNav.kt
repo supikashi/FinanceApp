@@ -12,7 +12,8 @@ import com.spksh.settings.ui.view_model.SettingsViewModel
 
 fun NavGraphBuilder.settingsNav(
     navController: NavHostController,
-    dependencies: SettingsDependencies
+    dependencies: SettingsDependencies,
+    version: String
 ) {
     val component = DaggerSettingsComponent.factory()
         .create(dependencies)
@@ -20,7 +21,7 @@ fun NavGraphBuilder.settingsNav(
     navigation<SettingsGraph>(startDestination = Settings) {
         composable<Settings> {
             val viewModel: SettingsViewModel = viewModel(factory = factory)
-            SettingsScreen(viewModel)
+            SettingsScreen(viewModel, version = version)
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.spksh.transactions.ui.model
 
+import androidx.compose.ui.graphics.Color
 import com.spksh.domain.model.CategoryAnalysis
+import com.spksh.graph.model.TransactionPlotModel
 import com.spksh.ui.utils.formatSum
 import kotlin.Long
 
@@ -14,7 +16,13 @@ data class CategoryAnalysisUiModel(
     val sumString: String = "",
     val percentage: Double = 0.0,
     val percentageString: String = ""
-)
+) {
+    fun toPlotModel() = TransactionPlotModel(
+        id = id,
+        proportion = (percentage / 100).toFloat(),
+        text = "$percentageString $name"
+    )
+}
 
 fun CategoryAnalysis.toUiModel(currency: String) = CategoryAnalysisUiModel(
     id = id,

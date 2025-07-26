@@ -4,7 +4,6 @@ import com.spksh.domain.repository.AccountRepository
 import com.spksh.domain.repository.CategoryRepository
 import com.spksh.domain.repository.TransactionRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 class SynchronizeUpdatedUseCase(

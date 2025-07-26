@@ -8,7 +8,7 @@ import com.spksh.domain.useCase.LoadAccountsUseCase
 import com.spksh.domain.model.Account
 import com.spksh.domain.useCase.GetTodayUseCase
 import com.spksh.domain.useCase.GetZoneIdUseCase
-import com.spksh.transactions.domain.use_case.GetTransactionsByPeriodFlowUseCase
+import com.spksh.domain.useCase.GetTransactionsByPeriodFlowUseCase
 import com.spksh.transactions.ui.state.TodayTransactionsScreenState
 import com.spksh.ui.state.UiState
 import jakarta.inject.Inject
@@ -54,22 +54,11 @@ class SpendingViewModel @Inject constructor(
         }
     }
 
-    private fun fetchTransactions(accountId: Long) = viewModelScope.launch {
-//        _uiState.value = UiState.Loading
-//        val response = loadTransactionsUseCase(accountId)
-//        if (!response) {
-//            _uiState.value = UiState.Error("")
-//        }
-    }
 
     fun retryLoad() {
         viewModelScope.launch {
             if (accountsFlow.value.isEmpty()) {
                 loadAccountsUseCase()
-            } else {
-                accountsFlow.value.firstOrNull()?.let {
-                    fetchTransactions(it.localId)
-                }
             }
         }
     }

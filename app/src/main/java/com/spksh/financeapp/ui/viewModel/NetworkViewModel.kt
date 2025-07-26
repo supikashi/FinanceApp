@@ -6,13 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.spksh.domain.connectivity.ConnectivityObserver
 import com.spksh.domain.useCase.SynchronizeUpdatedUseCase
 import jakarta.inject.Inject
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 /**
  * Вьюмодель для отслеживания сети

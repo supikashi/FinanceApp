@@ -61,7 +61,8 @@ fun AccountUpdateScreen(
             viewModel.updateAccount(
                 it,
                 { navController.popBackStack() },
-                { Toast.makeText(context, "Ошибка сохранения", Toast.LENGTH_SHORT).show() }
+                { Toast.makeText(context,
+                    context.getString(com.spksh.financeapp.account.R.string.save_error), Toast.LENGTH_SHORT).show() }
             )
         },
         onLocalSaveClick = { viewModel.localUpdateAccount(it) },
@@ -116,13 +117,13 @@ private fun AccountUpdateScreenSuccess(
         CustomTextField(
             text = state.data.accountUpdateData.name,
             onTextChange = { onAccountChange(state.data.accountUpdateData.copy(name = it)) },
-            label = "Название счета"
+            label = stringResource(com.spksh.financeapp.account.R.string.account_name)
         )
         HorizontalDivider()
         CustomTextField(
             text = state.data.accountUpdateData.balance,
             onTextChange = { onAccountChange(state.data.accountUpdateData.copy(balance = it)) },
-            label = "Баланс"
+            label = stringResource(com.spksh.financeapp.account.R.string.balance)
         )
 
         HorizontalDivider()
@@ -196,19 +197,19 @@ fun BottomSheet(
     val scope = rememberCoroutineScope()
     val dataList = listOf(
         CurrencyListItemData(
-            name = "Российский рубль",
+            name = stringResource(com.spksh.financeapp.account.R.string.russian_ruble),
             icon = R.drawable.ruble,
-            currency = "RUB"
+            currency = stringResource(com.spksh.financeapp.account.R.string.rub)
         ),
         CurrencyListItemData(
-            name = "Американский доллар",
+            name = stringResource(com.spksh.financeapp.account.R.string.us_dollar),
             icon = R.drawable.dollar,
-            currency = "USD"
+            currency = stringResource(com.spksh.financeapp.account.R.string.usd)
         ),
         CurrencyListItemData(
-            name = "Евро",
+            name = stringResource(com.spksh.financeapp.account.R.string.euro),
             icon = R.drawable.euro,
-            currency = "EUR"
+            currency = stringResource(com.spksh.financeapp.account.R.string.eur)
         )
     )
     ModalBottomSheet(
@@ -243,7 +244,7 @@ fun BottomSheet(
                             }
                         }
                 },
-                text = "Отмена",
+                text = stringResource(com.spksh.financeapp.account.R.string.cancel),
                 icon = R.drawable.cancellation_item,
                 containerColor = red,
                 contentColor = MaterialTheme.colorScheme.background

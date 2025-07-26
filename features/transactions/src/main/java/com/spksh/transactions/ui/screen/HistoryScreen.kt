@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,29 +20,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.spksh.financeapp.ui.R
-import com.spksh.transactions.ui.state.HistoryScreenState
-import com.spksh.transactions.ui.view_model.history.HistoryViewModel
-import com.spksh.ui.state.UiState
-import com.spksh.ui.components.DatePickerWrap
-import com.spksh.ui.components.ListItem
-import com.spksh.ui.components.ScreenStateHandler
-import com.spksh.ui.components.TopBar
-
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.graphics.Color
 import com.spksh.transactions.ui.navigation.IncomeAnalysis
 import com.spksh.transactions.ui.navigation.IncomeTransaction
 import com.spksh.transactions.ui.navigation.SpendingAnalysis
 import com.spksh.transactions.ui.navigation.SpendingTransaction
+import com.spksh.transactions.ui.state.HistoryScreenState
+import com.spksh.transactions.ui.view_model.history.HistoryViewModel
 import com.spksh.transactions.ui.view_model.history.IncomeHistoryViewModel
+import com.spksh.ui.components.DatePickerWrap
+import com.spksh.ui.components.ListItem
+import com.spksh.ui.components.ScreenStateHandler
+import com.spksh.ui.components.TopBar
+import com.spksh.ui.state.UiState
 
 @Composable
 fun HistoryScreen(
@@ -93,7 +91,7 @@ private fun HistoryScreenImpl(
             modifier = Modifier.fillMaxSize()
         ) {
             TopBar(
-                headline = "Моя история",
+                headline = stringResource(com.spksh.financeapp.transactions.R.string.my_history),
                 rightIcon = R.drawable.history,
                 rightIconOnClick = onAnalysisClick,
                 rightIconContentDescription = null,
@@ -125,13 +123,13 @@ private fun HistoryScreenSuccess(
     onTransactionClick: (Long) -> Unit = {},
 ) {
     DatePickListItem(
-        leadingText = "Начало",
+        leadingText = stringResource(com.spksh.financeapp.transactions.R.string.start_date),
         dateText = state.data.startDateString,
         onDateSelected = onStartDateSelected
     )
     HorizontalDivider()
     DatePickListItem(
-        leadingText = "Конец",
+        leadingText = stringResource(com.spksh.financeapp.transactions.R.string.end_date),
         dateText = state.data.endDateString,
         onDateSelected = onEndDateSelected
     )
@@ -146,7 +144,7 @@ private fun HistoryScreenSuccess(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Сумма",
+                text = stringResource(com.spksh.financeapp.transactions.R.string.sum),
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
@@ -258,19 +256,3 @@ fun DatePickListItem(
     }
 }
 
-//@Preview
-//@Composable
-//fun HistoryScreenPreview() {
-//    HistoryScreenImpl(
-//        state = UiState.Success(
-//            data = HistoryScreenState(
-//                startDate = LocalDate.MIN,
-//                endDate = LocalDate.MIN,
-//                startDateString = MockData.historyStartDate,
-//                endDateString = MockData.historyEndDate,
-//                sum = MockData.historySum,
-//                transactions = MockData.transactions,
-//            )
-//        )
-//    )
-//}

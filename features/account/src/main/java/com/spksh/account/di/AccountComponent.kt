@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.spksh.di.CoreModule
 import com.spksh.di.FactoryModule
 import com.spksh.domain.repository.AccountRepository
+import com.spksh.domain.repository.TransactionRepository
 import dagger.Component
 import jakarta.inject.Scope
 
@@ -11,13 +12,13 @@ import jakarta.inject.Scope
 @Component(
     modules = [
         AccountViewModelModule::class,
+        AccountUseCaseModule::class,
         FactoryModule::class,
         CoreModule::class,
     ],
     dependencies = [AccountDependencies::class]
 )
 interface AccountComponent {
-
     fun viewModelFactory(): ViewModelProvider.Factory
 
     @Component.Factory
@@ -28,6 +29,7 @@ interface AccountComponent {
 
 interface AccountDependencies {
     fun accountRepository(): AccountRepository
+    fun transactionRepository(): TransactionRepository
 }
 
 @Scope

@@ -1,9 +1,11 @@
 package com.spksh.transactions.di
 
 import com.spksh.domain.repository.CategoryRepository
+import com.spksh.domain.repository.TransactionRepository
 import com.spksh.domain.useCase.GetCategoriesByTypeFlowUseCase
 import com.spksh.domain.useCase.GetCategoriesFlowUseCase
 import com.spksh.domain.useCase.GetTodayUseCase
+import com.spksh.domain.useCase.GetTransactionsByPeriodFlowUseCase
 import com.spksh.domain.useCase.GetZoneIdUseCase
 import com.spksh.domain.useCase.LoadCategoriesFromNetworkUseCase
 import dagger.Module
@@ -35,4 +37,9 @@ object TransactionsUseCaseModule {
     @Provides
     fun provideLoadCategoriesFromNetworkUseCase(repository: CategoryRepository): LoadCategoriesFromNetworkUseCase =
         LoadCategoriesFromNetworkUseCase(repository)
+
+    @TransactionsScope
+    @Provides
+    fun provideGetTransactionsByPeriodFlowUseCase(repository: TransactionRepository): GetTransactionsByPeriodFlowUseCase =
+        GetTransactionsByPeriodFlowUseCase(repository)
 }

@@ -3,13 +3,12 @@ package com.spksh.category.ui.view_model
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.spksh.category.ui.state.CategoryScreenState
 import com.spksh.category.domain.use_case.FilterCategoriesByNameUseCase
+import com.spksh.category.ui.state.CategoryScreenState
 import com.spksh.domain.useCase.GetCategoriesByTypeFlowUseCase
 import com.spksh.domain.useCase.LoadCategoriesFromNetworkUseCase
 import com.spksh.ui.model.toUiModel
 import com.spksh.ui.state.UiState
-import com.spksh.ui.utils.multipleFetch
 import jakarta.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -4,7 +4,7 @@ import com.spksh.domain.useCase.GetAccountsFlowUseCase
 import com.spksh.domain.useCase.GetTodayUseCase
 import com.spksh.domain.useCase.GetZoneIdUseCase
 import com.spksh.domain.useCase.LoadAccountsUseCase
-import com.spksh.transactions.domain.use_case.GetTransactionsByPeriodFlowUseCase
+import com.spksh.domain.useCase.GetTransactionsByPeriodFlowUseCase
 import jakarta.inject.Inject
 
 /**

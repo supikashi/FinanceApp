@@ -1,7 +1,6 @@
 package com.spksh.account.domain.use_case
 
 import com.spksh.domain.model.Account
-import com.spksh.domain.model.AccountUpdateData
 import com.spksh.domain.repository.AccountRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

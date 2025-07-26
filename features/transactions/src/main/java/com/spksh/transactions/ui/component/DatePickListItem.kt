@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.spksh.financeapp.transactions.R
 import com.spksh.ui.components.DatePickerWrap
 import com.spksh.ui.components.ListItem
 import java.time.LocalTime
@@ -130,12 +131,12 @@ fun TimePickerDialog(
                     onDismiss()
                 }
             ) {
-                Text("Ok")
+                Text(stringResource(R.string.ok))
             }
         },
         dismissButton = {
             TextButton(onClick = { onDismiss() }) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel))
             }
         },
         text = { TimePicker(state = timePickerState) }

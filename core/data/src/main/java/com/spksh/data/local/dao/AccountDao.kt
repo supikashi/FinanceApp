@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.spksh.data.local.model.AccountEntity
-import com.spksh.data.local.model.CategoryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

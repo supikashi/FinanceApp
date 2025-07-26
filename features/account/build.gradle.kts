@@ -8,6 +8,7 @@ dependencies {
     api(project(":core:data"))
     api(project(":core:ui"))
     api(project(":core:di"))
+    api(project(":core:graph"))
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)

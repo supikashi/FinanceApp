@@ -12,7 +12,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,13 +21,13 @@ import androidx.navigation.NavController
 import com.spksh.financeapp.ui.R
 import com.spksh.transactions.ui.navigation.SpendingHistory
 import com.spksh.transactions.ui.navigation.SpendingTransaction
-import com.spksh.transactions.ui.view_model.transaction.SpendingViewModel
 import com.spksh.transactions.ui.state.TodayTransactionsScreenState
-import com.spksh.ui.state.UiState
+import com.spksh.transactions.ui.view_model.transaction.SpendingViewModel
 import com.spksh.ui.components.AddButton
 import com.spksh.ui.components.ListItem
 import com.spksh.ui.components.ScreenStateHandler
 import com.spksh.ui.components.TopBar
+import com.spksh.ui.state.UiState
 
 @Composable
 fun SpendingScreen(
@@ -161,15 +160,3 @@ fun SpendingScreenSuccess(
     }
 }
 
-//@Preview
-//@Composable
-//fun SpendingScreenPreview() {
-//    SpendingScreenImpl(
-//        state = UiState.Success(
-//            data = TransactionScreenState(
-//                sum = MockData.spendingSumText,
-//                categories = MockData.spendingCategoriesList
-//            )
-//        )
-//    )
-//}
