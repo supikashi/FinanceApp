@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
@@ -23,12 +24,17 @@ import androidx.navigation.NavController
 import com.spksh.account.ui.navigation.AccountUpdate
 import com.spksh.account.ui.state.AccountScreenState
 import com.spksh.account.ui.view_model.AccountViewModel
+import com.spksh.financeapp.account.R.*
 import com.spksh.financeapp.ui.R
+import com.spksh.graph.model.AccountPlotModel
+import com.spksh.graph.state.AccountAnalysisState
+import com.spksh.graph.ui.AccountAnalysisPlot
 import com.spksh.ui.state.UiState
 import com.spksh.ui.components.AddButton
 import com.spksh.ui.components.ListItem
 import com.spksh.ui.components.ScreenStateHandler
 import com.spksh.ui.components.TopBar
+import com.spksh.ui.theme.red
 
 @Composable
 fun AccountScreen(
@@ -92,7 +98,7 @@ private fun AccountScreenSuccess(
     LazyColumn {
         items(state.data.accounts) { account ->
             ListItem(
-                leadIcon = "💰",
+                leadIcon = stringResource(string.account_icon),
                 minHeight = 56.dp,
                 containerColor = MaterialTheme.colorScheme.secondary,
                 emojiContainerColor = MaterialTheme.colorScheme.background,
@@ -141,7 +147,16 @@ private fun AccountScreenSuccess(
                     )
                 }
             }
-            Spacer(Modifier.height(220.dp))
+            AccountAnalysisPlot(
+                state = AccountAnalysisState(
+                    data = state.data.transactions
+                ),
+                plusColor = MaterialTheme.colorScheme.primary,
+                minusColor = red,
+                modifier = Modifier
+                    .height(220.dp)
+                    .fillMaxWidth()
+            )
         }
     }
 }

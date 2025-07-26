@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_icon">💰</string>
+    <string name="save_error">Save error</string>
+    <string name="account_name">Account name</string>
+    <string name="balance">Balance</string>
+    <string name="russian_ruble">Russian ruble</string>
+    <string name="rub">RUB</string>
+    <string name="us_dollar">US dollar</string>
+    <string name="usd">USD</string>
+    <string name="euro">Euro</string>
+    <string name="eur">EUR</string>
+    <string name="cancel">Cancel</string>
+</resources>

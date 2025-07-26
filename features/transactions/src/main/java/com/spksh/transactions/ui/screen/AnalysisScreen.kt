@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +26,11 @@ import com.spksh.ui.components.ListItem
 import com.spksh.ui.components.ScreenStateHandler
 import com.spksh.ui.components.TopBar
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import com.spksh.graph.model.TransactionPlotModel
+import com.spksh.graph.state.TransactionsAnalysisState
+import com.spksh.graph.ui.TransactionsAnalysisPlot
 import com.spksh.transactions.ui.view_model.analysis.AnalysisViewModel
 
 @Composable
@@ -53,7 +61,7 @@ private fun AnalysisScreenImpl(
             modifier = Modifier.fillMaxSize()
         ) {
             TopBar(
-                headline = "Анализ",
+                headline = stringResource(com.spksh.financeapp.transactions.R.string.analysis),
                 rightIconOnClick = {},
                 rightIconContentDescription = null,
                 leftIcon = R.drawable.arrow_back,
@@ -83,7 +91,7 @@ private fun AnalysisScreenSuccess(
     onEndDateSelected: (Long?) -> Unit = {},
 ) {
     DatePickListItem(
-        leadingText = "Начало",
+        leadingText = stringResource(com.spksh.financeapp.transactions.R.string.start_date),
         dateText = state.data.startDateString,
         onDateSelected = onStartDateSelected,
         backgroundColor = MaterialTheme.colorScheme.background,
@@ -91,7 +99,7 @@ private fun AnalysisScreenSuccess(
     )
     HorizontalDivider()
     DatePickListItem(
-        leadingText = "Конец",
+        leadingText = stringResource(com.spksh.financeapp.transactions.R.string.end_date),
         dateText = state.data.endDateString,
         onDateSelected = onEndDateSelected,
         backgroundColor = MaterialTheme.colorScheme.background,
@@ -107,7 +115,7 @@ private fun AnalysisScreenSuccess(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Сумма",
+                text = stringResource(com.spksh.financeapp.transactions.R.string.sum),
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
@@ -122,12 +130,26 @@ private fun AnalysisScreenSuccess(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = "Транзакции за данный период отсутствуют",
+                text = stringResource(com.spksh.financeapp.transactions.R.string.no_transactions),
                 modifier = Modifier.align(Alignment.Center)
             )
         }
     } else {
         LazyColumn {
+            item {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .height(180.dp)
+                        .fillMaxWidth()
+                ) {
+                    TransactionsAnalysisPlot(
+                        state = TransactionsAnalysisState(data = state.data.categories.map {it.toPlotModel()}),
+                        modifier = Modifier.height(140.dp)
+                    )
+                }
+                HorizontalDivider()
+            }
             items(state.data.categories, {it.id}) { categories ->
                 ListItem(
                     leadIcon = categories.emoji

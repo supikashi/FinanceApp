@@ -10,6 +10,7 @@ import com.spksh.data.di.RemoteDataModule
 import com.spksh.di.CoreModule
 import com.spksh.di.FactoryModule
 import com.spksh.financeapp.FinanceApp
+import com.spksh.financeapp.MainActivity
 import com.spksh.settings.di.SettingsDependencies
 import com.spksh.transactions.di.TransactionsDependencies
 
@@ -32,7 +33,8 @@ interface AppComponent :
     TransactionsDependencies,
     SettingsDependencies
 {
-    fun injectTo(application: FinanceApp)
+    fun injectToApplication(application: FinanceApp)
+    fun injectToActivity(activity: MainActivity)
     fun viewModelProviderFactory(): ViewModelProvider.Factory
 
     @Component.Factory

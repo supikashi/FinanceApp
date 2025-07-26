@@ -1,14 +1,13 @@
-package com.spksh.transactions.domain.use_case
+package com.spksh.domain.useCase
 
 import com.spksh.domain.model.TransactionResponse
 import com.spksh.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
 /**
  * Use-case для получения списка транзакций за период из [TransactionRepository
  */
-class GetTransactionsByPeriodFlowUseCase @Inject constructor(
+class GetTransactionsByPeriodFlowUseCase(
     private val repository: TransactionRepository
 ) {
     operator fun invoke(

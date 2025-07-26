@@ -77,7 +77,7 @@ fun ListItem(
             Spacer(Modifier.width(16.dp))
             Icon(
                 painter = painterResource(R.drawable.more_vert),
-                contentDescription =  "Get detailed info",
+                contentDescription = null,
                 modifier = Modifier.size(24.dp),
                 tint = MaterialTheme.colorScheme.tertiary
             )

@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -90,7 +91,7 @@ private fun HistoryScreenImpl(
             modifier = Modifier.fillMaxSize()
         ) {
             TopBar(
-                headline = "Моя история",
+                headline = stringResource(com.spksh.financeapp.transactions.R.string.my_history),
                 rightIcon = R.drawable.history,
                 rightIconOnClick = onAnalysisClick,
                 rightIconContentDescription = null,
@@ -122,13 +123,13 @@ private fun HistoryScreenSuccess(
     onTransactionClick: (Long) -> Unit = {},
 ) {
     DatePickListItem(
-        leadingText = "Начало",
+        leadingText = stringResource(com.spksh.financeapp.transactions.R.string.start_date),
         dateText = state.data.startDateString,
         onDateSelected = onStartDateSelected
     )
     HorizontalDivider()
     DatePickListItem(
-        leadingText = "Конец",
+        leadingText = stringResource(com.spksh.financeapp.transactions.R.string.end_date),
         dateText = state.data.endDateString,
         onDateSelected = onEndDateSelected
     )
@@ -143,7 +144,7 @@ private fun HistoryScreenSuccess(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Сумма",
+                text = stringResource(com.spksh.financeapp.transactions.R.string.sum),
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(

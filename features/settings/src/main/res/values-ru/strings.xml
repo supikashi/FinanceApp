@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_color">Основной цвет</string>
+    <string name="haptics">Хаптики</string>
+    <string name="code">Код пароль</string>
+    <string name="synchronization">Синхронизация</string>
+    <string name="language">Язык</string>
+    <string name="about">О программе</string>
+    <string name="settings">Настройки</string>
+    <string name="dark_theme">Тёмная тема</string>
+    <string name="synced">Синхронизировано</string>
+    <string name="not_synced">Не синхронизировано</string>
+    <string name="about_app">О приложении</string>
+    <string name="use_system">Использовать системный</string>
+    <string name="english">Английский</string>
+    <string name="russian">Русский</string>
+</resources>

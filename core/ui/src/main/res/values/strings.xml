@@ -1,14 +1,19 @@
 <resources>
     <string name="app_name">FinanceApp</string>
-    <string name="my_account">Мой счет</string>
-    <string name="currency">Валюта</string>
+    <string name="my_account">My Account</string>
+    <string name="currency">Currency</string>
     <string name="edit">Edit</string>
-    <string name="add_new">Add new</string>
-    <string name="my_categories">Мои статьи</string>
-    <string name="find_category">Найти статью</string>
-    <string name="whole">Всего</string>
-    <string name="show_history">Show history</string>
-    <string name="income_today">Доходы сегодня</string>
+    <string name="add_new">Create</string>
+    <string name="my_categories">My Categories</string>
+    <string name="find_category">Find Category</string>
+    <string name="whole">Total</string>
+    <string name="show_history">Show History</string>
+    <string name="income_today">Income Today</string>
     <string name="more">More</string>
-    <string name="expences_today">Расходы сегодня</string>
+    <string name="expences_today">Expenses Today</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="error_text">Error loading data\nCheck your internet connection</string>
+    <string name="retry">Retry</string>
+    <string name="no_internet">No internet</string>
 </resources>

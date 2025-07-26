@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -81,7 +82,8 @@ fun TransactionScreen(
                     { navController.popBackStack() },
                     {
                         showLoader = false
-                        Toast.makeText(context, "Ошибка сохранения", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context,
+                            context.getString(com.spksh.financeapp.transactions.R.string.save_error), Toast.LENGTH_SHORT).show()
                     }
                 )
             }
@@ -92,7 +94,8 @@ fun TransactionScreen(
                 { navController.popBackStack() },
                 {
                     showLoader = false
-                    Toast.makeText(context, "Ошибка удаления", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,
+                        context.getString(com.spksh.financeapp.transactions.R.string.deletion_error), Toast.LENGTH_SHORT).show()
                 }
             )
         },
@@ -118,7 +121,9 @@ private fun TransactionScreenImpl(
             modifier = Modifier.fillMaxSize()
         ) {
             TopBar(
-                headline = if (isIncome) "Доход" else "Расход",
+                headline = if (isIncome) stringResource(com.spksh.financeapp.transactions.R.string.income) else stringResource(
+                    com.spksh.financeapp.transactions.R.string.spending
+                ),
                 rightIcon = R.drawable.okay,
                 rightIconOnClick = {
                     (state as? UiState.Success)?.let {
@@ -173,7 +178,7 @@ private fun TransactionScreenSuccess(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Счет")
+                    Text(stringResource(com.spksh.financeapp.transactions.R.string.account))
                     Text(state.data.accountList.firstOrNull { it.id == state.data.transaction.accountId }?.name ?: state.data.accountList.first().name)
                 }
             }
@@ -187,7 +192,7 @@ private fun TransactionScreenSuccess(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Статья")
+                    Text(stringResource(com.spksh.financeapp.transactions.R.string.category))
                     Text(state.data.categoryList.firstOrNull { it.id == state.data.transaction.categoryId }?.name ?: state.data.categoryList.first().name)
                 }
             }
@@ -195,11 +200,11 @@ private fun TransactionScreenSuccess(
             CustomTextField(
                 text = state.data.transaction.amount,
                 onTextChange = { onLocalSaveClick(state.data.transaction.copy(amount = it)) },
-                label = "Сумма",
+                label = stringResource(com.spksh.financeapp.transactions.R.string.sum),
             )
             HorizontalDivider()
             DatePickListItem(
-                leadingText = "Дата",
+                leadingText = stringResource(com.spksh.financeapp.transactions.R.string.date),
                 dateText = state.data.transaction.dateString,
                 onDateSelected = onSetDate,
                 height = 68,
@@ -207,7 +212,7 @@ private fun TransactionScreenSuccess(
             )
             HorizontalDivider()
             TimePickListItem(
-                leadingText = "Время",
+                leadingText = stringResource(com.spksh.financeapp.transactions.R.string.time),
                 timeText = state.data.transaction.timeString,
                 onTimeSelected = onSetTime,
                 height = 68,
@@ -217,20 +222,26 @@ private fun TransactionScreenSuccess(
             CustomTextField(
                 text = state.data.transaction.comment,
                 onTextChange = { onLocalSaveClick(state.data.transaction.copy(comment = it)) },
-                label = "Комментарий"
+                label = stringResource(com.spksh.financeapp.transactions.R.string.comment)
             )
             HorizontalDivider()
             Button(
                 onClick = {onDelete()},
                 colors = ButtonDefaults.buttonColors(containerColor = red),
-                modifier = Modifier.fillMaxWidth().padding(16.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
-                Text(if (isIncome) "Удалить доход" else "Удалить расход")
+                Text(if (isIncome) stringResource(com.spksh.financeapp.transactions.R.string.delete_income) else stringResource(
+                    com.spksh.financeapp.transactions.R.string.delete_spending
+                ), color = MaterialTheme.colorScheme.onBackground)
             }
         }
         if (showLoader) {
             CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.BottomCenter).padding(16.dp)
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(16.dp)
             )
         }
     }
@@ -309,7 +320,9 @@ private fun CustomTextField(
         onValueChange = {
             onTextChange(it)
         },
-        modifier = Modifier.fillMaxWidth().height(68.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(68.dp),
         label = { Text(label) },
         singleLine = true,
         colors = TextFieldDefaults.colors(

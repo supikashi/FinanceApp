@@ -8,15 +8,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.spksh.financeapp.ui.R
 import com.spksh.ui.theme.red
 
 @Composable
 fun NoInternetBanner(isVisible: Boolean) {
     if (!isVisible) return
     Text(
-        text = "Нет интернета",
+        text = stringResource(R.string.no_internet),
         textAlign = TextAlign.Center,
         color = MaterialTheme.colorScheme.background,
         modifier = Modifier

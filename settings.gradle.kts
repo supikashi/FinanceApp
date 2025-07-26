@@ -29,7 +29,8 @@ listOf(
     "domain",
     "data",
     "ui",
-    "di"
+    "di",
+    "graph"
 ).forEach {
     include(":core:$it")
 }

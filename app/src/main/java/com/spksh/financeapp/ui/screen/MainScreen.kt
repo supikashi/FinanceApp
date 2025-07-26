@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
@@ -30,13 +31,19 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.spksh.account.ui.navigation.AccountGraph
 import com.spksh.account.ui.navigation.accountNav
+import com.spksh.category.ui.navigation.CategoriesGraph
 import com.spksh.category.ui.navigation.categoryNav
 import com.spksh.domain.connectivity.ConnectivityObserver
+import com.spksh.financeapp.BuildConfig
+import com.spksh.financeapp.R
 import com.spksh.financeapp.di.AppComponent
 import com.spksh.financeapp.ui.navigation.BottomBarScreen
 import com.spksh.financeapp.ui.viewModel.NetworkViewModel
+import com.spksh.settings.ui.navigation.SettingsGraph
 import com.spksh.settings.ui.navigation.settingsNav
+import com.spksh.transactions.ui.navigation.IncomeGraph
 import com.spksh.transactions.ui.navigation.SpendingGraph
 import com.spksh.transactions.ui.navigation.incomeNav
 import com.spksh.transactions.ui.navigation.spendingNav
@@ -46,12 +53,18 @@ import com.spksh.ui.theme.FinanceAppTheme
 @Composable
 fun MainScreen(
     viewModelFactory: ViewModelProvider.Factory,
-    appComponent: AppComponent
+    appComponent: AppComponent,
+    isDarkTheme: Boolean,
+    color: Int
 ) {
     val viewModel: NetworkViewModel = viewModel(factory = viewModelFactory)
     val status by viewModel.status.collectAsState()
     val navController = rememberNavController()
-    FinanceAppTheme {
+    FinanceAppTheme(
+        darkTheme = isDarkTheme,
+        color = color
+    ) {
+
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             bottomBar = {
@@ -79,10 +92,17 @@ fun MainScreen(
 fun BottomBar(navController: NavController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+    val getScreensLists = listOf(
+        BottomBarScreen(SpendingGraph, stringResource(R.string.spending), R.drawable.downtrend),
+        BottomBarScreen(IncomeGraph, stringResource(R.string.income), R.drawable.uptrend),
+        BottomBarScreen(AccountGraph, stringResource(R.string.account), R.drawable.calculator),
+        BottomBarScreen(CategoriesGraph, stringResource(R.string.category), R.drawable.bar_chart_side),
+        BottomBarScreen(SettingsGraph, stringResource(R.string.settings), R.drawable.screw)
+    )
     NavigationBar(
         //modifier = Modifier.height(84.dp)
     ) {
-        BottomBarScreen.getScreensLists.forEach { screen ->
+        getScreensLists.forEach { screen ->
             NavigationBarItem(
                 icon = {
                     Icon(
@@ -124,6 +144,6 @@ fun AppNavigation(
         incomeNav(navController, dependencies)
         accountNav(navController, dependencies)
         categoryNav(navController, dependencies)
-        settingsNav(navController, dependencies)
+        settingsNav(navController, dependencies, BuildConfig.VERSION_NAME)
     }
 }
